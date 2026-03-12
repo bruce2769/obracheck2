@@ -37,8 +37,6 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 4px 14px; font-size:0.58rem; color:var(--muted); cursor:pointer; transition:all 0.2s; border:none; background:transparent; text-transform:uppercase; }
 .nav-item .ni { font-size:1.25rem; }
 .nav-item.active { color:var(--accent); }
-.ni-dot { width:4px; height:4px; border-radius:50%; background:transparent; margin:0 auto; }
-.nav-item.active .ni-dot { background:var(--accent); }
 
 .screen-header { padding:20px 20px 14px; border-bottom:1px solid var(--border); }
 .screen-title { font-family:'Barlow Condensed',sans-serif; font-size:1.6rem; font-weight:800; }
@@ -47,38 +45,31 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 /* Cards & Lists */
 .obra-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; cursor:pointer; transition:all 0.15s; position:relative; overflow:hidden; margin-bottom:10px; }
 .obra-card::before { content:''; position:absolute; left:0;top:0;bottom:0; width:3px; background:var(--accent); border-radius:3px 0 0 3px; }
-.obra-card.inactive::before { background:var(--muted); }
-.obra-card:active { transform:scale(0.98); background:#1a1f1c; }
 .obra-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
 .obra-name { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:800; }
-.obra-status { font-size:0.62rem; padding:3px 8px; border-radius:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
-.obra-status.activa { background:rgba(34,197,94,0.15); color:var(--green); }
-.obra-status.inactiva { background:rgba(107,122,112,0.15); color:var(--muted); }
+.obra-status { font-size:0.62rem; padding:3px 8px; border-radius:10px; font-weight:700; text-transform:uppercase; background:rgba(34,197,94,0.15); color:var(--green); }
 .obra-addr { font-size:0.77rem; color:var(--muted); margin-bottom:10px; }
 .obra-meta { display:flex; gap:12px; font-size:0.7rem; color:var(--muted); }
 
-.worker-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.15s; }
-.worker-item:active { background:var(--surface2); }
+.worker-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border); cursor:pointer; }
 .worker-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; font-weight:800; flex-shrink:0; background:rgba(249,115,22,0.1); color:var(--accent);}
 .worker-info { flex:1; min-width:0; }
 .worker-name { font-size:0.9rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .worker-role { font-size:0.7rem; color:var(--muted); }
-.worker-time-val { font-size:0.82rem; color:var(--green); font-weight:600; text-align:right; }
 
 /* Buttons & Inputs */
 .btn-row { display:flex; gap:8px; }
-.btn-primary { width:100%; padding:15px; border-radius:12px; border:none; background:var(--accent); color:#000; font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:800; letter-spacing:0.5px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
-.btn-primary:active { transform:scale(0.97); opacity:0.9; }
+.btn-primary { width:100%; padding:15px; border-radius:12px; border:none; background:var(--accent); color:#000; font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
 .btn-primary.green { background:var(--green); }
 .btn-primary.red { background:var(--red); }
 .btn-primary.blue { background:var(--blue); }
+.btn-primary:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; }
 .btn-secondary { width:100%; padding:13px; border-radius:12px; border:1px solid var(--border); background:transparent; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; margin-top:8px; }
 .btn-danger { width:100%; padding:13px; border-radius:12px; border:1px solid rgba(239,68,68,0.3); background:rgba(239,68,68,0.08); color:var(--red); font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; margin-top:8px; }
 
 .input-group { margin-bottom:14px; }
 .input-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
 .input-field { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; color:var(--text); font-family:'Barlow',sans-serif; font-size:0.9rem; outline:none; }
-.input-field:focus { border-color:var(--accent); }
 
 .fab { position:fixed; bottom:96px; right:calc(50% - 196px); width:50px; height:50px; border-radius:50%; background:var(--accent); border:none; color:#000; font-size:1.4rem; font-weight:bold; cursor:pointer; box-shadow:0 8px 24px rgba(249,115,22,0.45); display:flex; align-items:center; justify-content:center; z-index:100; }
 @media(max-width:440px){ .fab { right:20px; } }
@@ -86,7 +77,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 /* Modals & GPS */
 .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; display:none; align-items:flex-end; justify-content:center; }
 .modal-overlay.open { display:flex; }
-.modal { background:var(--surface); border-radius:24px 24px 0 0; border:1px solid var(--border); border-bottom:none; padding:24px 24px 36px; width:100%; max-width:420px; animation:slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1); max-height:90vh; overflow-y:auto; }
+.modal { background:var(--surface); border-radius:24px 24px 0 0; border:1px solid var(--border); padding:24px 24px 36px; width:100%; max-width:420px; animation:slideUp 0.3s; }
 @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 .modal-handle { width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 20px; }
 
@@ -95,24 +86,20 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 .gps-status.fail { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:var(--red); }
 .gps-status.checking { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); color:var(--blue); justify-content:center;}
 
-.toast { position:fixed; top:70px; left:50%; transform:translateX(-50%) translateY(-20px); opacity:0; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:13px 18px; display:flex; align-items:center; gap:10px; font-size:0.83rem; z-index:500; max-width:360px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:all 0.35s; pointer-events:none; }
-.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast { position:fixed; top:70px; left:50%; transform:translateX(-50%); opacity:0; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:13px 18px; display:flex; align-items:center; gap:10px; z-index:500; transition:all 0.35s; pointer-events:none; }
+.toast.show { opacity:1; }
 
-/* Custom Report Elements */
-.report-header { margin:16px; background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(251,191,36,0.08)); border:1px solid rgba(249,115,22,0.2); border-radius:16px; padding:16px; }
 .rstat-val { font-family:'Barlow Condensed',sans-serif; font-size:1.6rem; font-weight:900; text-align:center; }
 .rstat-lbl { font-size:0.62rem; color:var(--muted); text-transform:uppercase; text-align:center; }
-.rt { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.rt { width:100%; border-collapse:collapse; font-size:0.8rem; margin-top:15px; }
 .rt th { text-align:left; padding:8px 10px; font-size:0.62rem; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
 .rt td { padding:10px; border-bottom:1px solid rgba(42,51,48,0.5); }
 .section-label { padding:12px 16px 6px; font-size:0.62rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); font-weight:700; }
 .p16 { padding: 16px; }
 
-/* Success Screen */
 .success-screen { display:none; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; text-align:center; min-height:400px; }
 .success-screen.show { display:flex; }
-.success-circle { width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:24px; animation:popIn 0.5s; }
-@keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+.success-circle { width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:24px; }
 </style>
 </head>
 <body>
@@ -124,7 +111,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 <div class="phone-wrap">
 <div class="phone">
   <div class="status-bar">
-    <span class="stime" id="clock">09:41</span>
+    <span class="stime" id="clock">00:00</span>
     <span style="font-size:0.7rem">📍 GPS · <span class="gps-pulse"></span> Activo</span>
   </div>
 
@@ -141,22 +128,16 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
     <div class="screen" id="s-marcar">
       <div id="marcar-main">
         <div class="screen-header">
-          <div class="screen-title">QR de Obra</div>
+          <div class="screen-title">Marcación</div>
           <div class="screen-sub" id="marcar-sub">Selecciona una obra primero</div>
         </div>
-        <div class="p16" style="display:flex;flex-direction:column;gap:14px">
-          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center">
-            <div style="font-size:0.62rem;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700">QR FIJO DE ESTA OBRA</div>
-            <div style="display:inline-block;background:#fff;padding:12px;border-radius:12px;margin-bottom:14px">
-              <svg width="140" height="140" viewBox="0 0 140 140"><rect width="140" height="140" fill="white"/><rect x="20" y="20" width="100" height="100" fill="#111"/></svg>
-            </div>
-            <div id="qr-obra-name" style="font-family:'Barlow Condensed';font-size:1.1rem;font-weight:800;margin-bottom:4px">SIN OBRA</div>
-            <div style="font-size:0.7rem;color:var(--muted)">El trabajador escanea esto al llegar</div>
+        <div class="p16">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;margin-bottom:15px">
+            <div style="font-size:0.62rem;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700">PUNTO DE ASISTENCIA</div>
+            <div id="qr-obra-name" style="font-family:'Barlow Condensed';font-size:1.1rem;font-weight:800;margin-bottom:4px;color:var(--accent)">SIN OBRA</div>
           </div>
-          
-          <button class="btn-primary blue" onclick="iniciarEscaneoGPS()">📱 Simular Escaneo (Validar GPS)</button>
-          
-          <div class="section-label" style="padding-left:0">Presentes hoy</div>
+          <button class="btn-primary blue" onclick="iniciarEscaneoGPS()">📍 VALIDAR UBICACIÓN Y MARCAR</button>
+          <div class="section-label" style="padding-left:0;margin-top:20px">Personal Activo Hoy</div>
           <div id="worker-quick"></div>
         </div>
       </div>
@@ -164,23 +145,23 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
       <div id="scan-screen" style="display:none">
         <div style="background:var(--surface2);border-bottom:1px solid var(--border);padding:13px 16px;display:flex;align-items:center;gap:10px">
           <button onclick="volverQR()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer">←</button>
-          <div><div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">ObraCheck</div><div style="font-size:0.66rem;color:var(--muted)">Registro GPS Real</div></div>
+          <div><div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">ObraCheck GPS</div></div>
         </div>
 
         <div id="gps-checking" class="p16" style="text-align:center;padding-top:40px">
           <div style="font-size:3rem;margin-bottom:16px">📡</div>
-          <h2 style="font-family:'Barlow Condensed'">Verificando ubicación...</h2>
-          <div class="gps-status checking">Obteniendo coordenadas exactas...</div>
+          <h2 style="font-family:'Barlow Condensed'">Verificando satélites...</h2>
+          <div class="gps-status checking">Calculando distancia real...</div>
         </div>
 
         <div id="gps-ok" class="p16" style="display:none;flex-direction:column;gap:14px">
           <div class="gps-status ok" id="gps-msg-ok">✅ Dentro del radio</div>
           <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
-            <label class="input-label">¿Quién eres?</label>
+            <label class="input-label">Selecciona tu nombre:</label>
             <select class="input-field" id="scan-worker-select" style="margin-bottom:12px" onchange="validarBotonesRegistro()"></select>
             <div class="btn-row">
-              <button class="btn-primary green" id="btn-ent" onclick="doRegistro('ENTRADA')" disabled>🟢 ENTRADA</button>
-              <button class="btn-primary red" id="btn-sal" onclick="doRegistro('SALIDA')" disabled>🔴 SALIDA</button>
+              <button class="btn-primary green" id="btn-ent" onclick="doRegistro('ENTRADA')" disabled>ENTRADA</button>
+              <button class="btn-primary red" id="btn-sal" onclick="doRegistro('SALIDA')" disabled>SALIDA</button>
             </div>
           </div>
         </div>
@@ -198,7 +179,7 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
         <div class="success-circle" id="succ-circ" style="background:rgba(34,197,94,0.15); border:2px solid var(--green)">✅</div>
         <div style="font-family:'Barlow Condensed';font-size:1.8rem;font-weight:900" id="succ-title">REGISTRADO</div>
         <div style="color:var(--muted);font-size:0.9rem;margin-bottom:30px" id="succ-name">Nombre</div>
-        <button class="btn-primary" onclick="volverQR()">Volver al Inicio</button>
+        <button class="btn-primary" onclick="volverQR()">Continuar</button>
       </div>
     </div>
 
@@ -226,18 +207,17 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 
     <div class="screen" id="s-reporte">
       <div class="screen-header"><div class="screen-title">Reportes</div></div>
-      <div class="report-header">
-        <div style="font-family:'Barlow Condensed';font-size:1.3rem;font-weight:800" id="rep-obra-name">🏗️ Selecciona obra</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
-          <div><div class="rstat-val" style="color:var(--accent)" id="rep-total">0</div><div class="rstat-lbl">Trabajadores</div></div>
+      <div class="p16" style="background:var(--surface2); margin:16px; border-radius:16px; border:1px solid var(--border)">
+        <div style="font-family:'Barlow Condensed';font-size:1.3rem;font-weight:800; color:var(--accent)" id="rep-obra-name">Selecciona obra</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+          <div><div class="rstat-val" id="rep-total">0</div><div class="rstat-lbl">Personal</div></div>
           <div><div class="rstat-val" style="color:var(--green)" id="rep-logs">0</div><div class="rstat-lbl">Marcas Hoy</div></div>
         </div>
       </div>
       <div class="p16">
-        <button class="btn-primary green" onclick="exportarCSV()">📊 Exportar Todo a Excel (.CSV)</button>
-        <div class="section-label" style="padding-left:0;margin-top:20px">Resumen de Horas</div>
+        <button class="btn-primary green" onclick="exportarCSV()">📊 Exportar a Excel (.CSV)</button>
         <table class="rt">
-          <thead><tr><th>Trabajador</th><th>Días</th><th>Hrs Aprox</th></tr></thead>
+          <thead><tr><th>Trabajador</th><th>Días</th><th>Hrs Est.</th></tr></thead>
           <tbody id="rep-tbody"></tbody>
         </table>
       </div>
@@ -246,25 +226,21 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
     <div class="screen" id="s-ajustes">
       <div class="screen-header">
         <div class="screen-title">Ajustes</div>
-        <div class="screen-sub" id="ajustes-obra">Configuración de la obra actual</div>
+        <div class="screen-sub" id="ajustes-obra">Selecciona obra</div>
       </div>
       <div class="p16">
         <div class="input-group">
-          <label class="input-label">Dirección / Referencia</label>
-          <input class="input-field" id="aj-dir" placeholder="Ej: Av. Principal 123">
-        </div>
-        <div class="input-group">
-          <label class="input-label">Radio GPS Permitido (Metros)</label>
+          <label class="input-label">Radio GPS (Metros permitidos)</label>
           <select class="input-field" id="aj-radio" onchange="actualizarRadio()">
-            <option value="20">20 metros (Estricto)</option>
-            <option value="50">50 metros (Recomendado)</option>
-            <option value="80">80 metros (Obra grande)</option>
+            <option value="20">20 metros</option>
+            <option value="50">50 metros</option>
+            <option value="80">80 metros</option>
           </select>
         </div>
-        <button class="btn-primary blue" onclick="recapturarGPS()">📍 Recapturar Centro GPS de Obra</button>
+        <button class="btn-primary blue" onclick="recapturarGPS()">📍 Recapturar Centro GPS</button>
         
-        <div class="section-label" style="padding-left:0; margin-top:20px">Zona Peligrosa</div>
-        <button class="btn-danger" onclick="eliminarObra()">🗑️ Eliminar Obra y Datos</button>
+        <div class="section-label" style="padding-left:0; margin-top:20px; color:var(--red)">Zona Peligrosa</div>
+        <button class="btn-danger" onclick="eliminarObra()">🗑️ Eliminar Obra Actual</button>
       </div>
     </div>
 
@@ -285,11 +261,10 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 <div class="modal-overlay" id="modal-obra">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div style="font-family:'Barlow Condensed';font-size:1.4rem;font-weight:800;margin-bottom:16px">➕ Nueva Obra</div>
-    <div class="input-group"><label class="input-label">Nombre</label><input class="input-field" id="new-obra-name" placeholder="Ej: Casa Familia Pérez"></div>
-    <div class="input-group"><label class="input-label">Dirección</label><input class="input-field" id="new-obra-dir" placeholder="Opcional"></div>
+    <div style="font-family:'Barlow Condensed';font-size:1.4rem;font-weight:800;margin-bottom:16px; color:var(--accent)">➕ Nueva Obra</div>
+    <div class="input-group"><label class="input-label">Nombre</label><input class="input-field" id="new-obra-name" placeholder="Ej: Edificio Central"></div>
     <p style="font-size:0.75rem; color:var(--muted); margin-bottom:15px">Se capturará tu ubicación GPS actual como el centro oficial de la obra.</p>
-    <button class="btn-primary" onclick="crearObra()">📍 Capturar GPS y Crear</button>
+    <button class="btn-primary" onclick="crearObra()">📍 Capturar y Guardar</button>
     <button class="btn-secondary" onclick="closeModal('modal-obra')">Cancelar</button>
   </div>
 </div>
@@ -297,30 +272,15 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 <div class="modal-overlay" id="modal-worker">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div style="font-family:'Barlow Condensed';font-size:1.4rem;font-weight:800;margin-bottom:16px">👷 Agregar Trabajador</div>
+    <div style="font-family:'Barlow Condensed';font-size:1.4rem;font-weight:800;margin-bottom:16px; color:var(--accent)">👷 Nuevo Trabajador</div>
     <div class="input-group"><label class="input-label">Nombre Completo</label><input class="input-field" id="nw-name"></div>
-    <div class="input-group"><label class="input-label">RUT</label><input class="input-field" id="nw-rut" placeholder="Ej: 12.345.678-9"></div>
     <div class="input-group"><label class="input-label">Cargo</label>
       <select class="input-field" id="nw-role">
-        <option>Maestro primera</option><option>Maestro segunda</option><option>Ayudante</option><option>Capataz</option>
+        <option>Maestro</option><option>Ayudante</option><option>Capataz</option>
       </select>
     </div>
     <button class="btn-primary" onclick="addWorker()">Guardar</button>
     <button class="btn-secondary" onclick="closeModal('modal-worker')">Cancelar</button>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-detail">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
-      <div class="worker-avatar" id="det-av" style="font-size:1.2rem; width:50px; height:50px">X</div>
-      <div><div style="font-family:'Barlow Condensed';font-size:1.3rem;font-weight:800" id="det-name">Nombre</div><div style="font-size:0.75rem;color:var(--muted)" id="det-sub">Cargo</div></div>
-    </div>
-    <div class="input-group"><label class="input-label">Editar Nombre</label><input class="input-field" id="det-name-in"></div>
-    <button class="btn-primary" onclick="saveWorkerEdit()">💾 Guardar Cambios</button>
-    <button class="btn-danger" onclick="fireWorker()">🚫 Dar de baja (Eliminar)</button>
-    <button class="btn-secondary" onclick="closeModal('modal-detail')">Cancelar</button>
   </div>
 </div>
 
@@ -332,7 +292,6 @@ let obras = JSON.parse(localStorage.getItem('oc_obras') || '[]');
 let workers = JSON.parse(localStorage.getItem('oc_workers') || '[]');
 let asistencia = JSON.parse(localStorage.getItem('oc_asist') || '[]');
 let currentObraId = null;
-let selWorkerId = null;
 
 // --- UTILIDADES ---
 function saveData() {
@@ -370,26 +329,25 @@ function goScreen(n) {
 // --- 1. OBRAS ---
 function crearObra() {
     const name = document.getElementById('new-obra-name').value;
-    const dir = document.getElementById('new-obra-dir').value;
     if(!name) return showToast('⚠️', 'Error', 'Ingresa un nombre');
 
     navigator.geolocation.getCurrentPosition(pos => {
-        const o = { id: Date.now(), name, addr: dir, lat: pos.coords.latitude, lon: pos.coords.longitude, radio: 50, activa: true };
+        const o = { id: Date.now(), name, lat: pos.coords.latitude, lon: pos.coords.longitude, radio: 50 };
         obras.push(o); saveData(); renderObras(); closeModal('modal-obra');
         showToast('🏗️', 'Obra Creada', 'Ubicación GPS guardada');
+        document.getElementById('new-obra-name').value = '';
     }, () => showToast('❌', 'Error GPS', 'Activa la ubicación'), { enableHighAccuracy: true });
 }
 
 function renderObras() {
     const c = document.getElementById('obras-list-container');
-    document.getElementById('obras-sub').textContent = `${obras.length} totales`;
+    document.getElementById('obras-sub').textContent = `${obras.length} proyectos`;
     if(!obras.length) return c.innerHTML = `<p style="text-align:center; color:var(--muted); margin-top:40px">Sin obras. Presiona +</p>`;
     
     c.innerHTML = obras.map(o => {
         const wCount = workers.filter(w=>w.obraId===o.id).length;
         return `<div class="obra-card" onclick="selectObra(${o.id})">
-            <div class="obra-top"><div class="obra-name">${o.name}</div><div class="obra-status activa">Activa</div></div>
-            <div class="obra-addr">📍 ${o.addr || 'Sin dirección'}</div>
+            <div class="obra-top"><div class="obra-name">${o.name}</div><div class="obra-status">Activa</div></div>
             <div class="obra-meta">👷 ${wCount} trabajadores | ⭕ Radio ${o.radio}m</div>
         </div>`;
     }).join('');
@@ -404,7 +362,6 @@ function selectObra(id) {
     document.getElementById('rep-obra-name').textContent = o.name;
     document.getElementById('ajustes-obra').textContent = o.name;
     showToast('✅', 'Obra Seleccionada', o.name);
-    // Cambiar visualmente el tab activo a Marcar
     document.querySelectorAll('.nav-item')[1].click();
 }
 
@@ -417,7 +374,7 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
 }
 
 function iniciarEscaneoGPS() {
-    if(!currentObraId) return showToast('⚠️', 'Aviso', 'Selecciona una obra en la pestaña Obras');
+    if(!currentObraId) return showToast('⚠️', 'Aviso', 'Selecciona una obra primero');
     const o = obras.find(x => x.id === currentObraId);
     
     document.getElementById('marcar-main').style.display = 'none';
@@ -426,7 +383,6 @@ function iniciarEscaneoGPS() {
     document.getElementById('gps-ok').style.display = 'none';
     document.getElementById('gps-fail').style.display = 'none';
 
-    // GPS REAL, SIN CACHÉ
     navigator.geolocation.getCurrentPosition(pos => {
         const dist = calcularDistancia(pos.coords.latitude, pos.coords.longitude, o.lat, o.lon);
         document.getElementById('gps-checking').style.display = 'none';
@@ -440,7 +396,7 @@ function iniciarEscaneoGPS() {
             validarBotonesRegistro();
         } else {
             document.getElementById('gps-fail').style.display = 'flex';
-            document.getElementById('gps-msg-fail').innerHTML = `❌ Estás a ${Math.round(dist)}m<br><small>Radio máx: ${o.radio}m</small>`;
+            document.getElementById('gps-msg-fail').innerHTML = `❌ Estás a ${Math.round(dist)}m<br><small>Límite: ${o.radio}m</small>`;
         }
     }, () => {
         document.getElementById('gps-checking').style.display = 'none';
@@ -460,15 +416,12 @@ function doRegistro(tipo) {
     const worker = workers.find(w => w.id === wId);
     const horaStr = new Date().toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
     
-    // Actualizar estado del trabajador
     worker.present = (tipo === 'ENTRADA');
     worker.lastTime = horaStr;
     
-    // Guardar log
     asistencia.push({ id: Date.now(), workerId: wId, workerName: worker.name, obraId: currentObraId, tipo, fecha: new Date().toLocaleDateString('es-CL'), hora: horaStr });
     saveData();
 
-    // UI Éxito
     document.getElementById('scan-screen').style.display = 'none';
     document.getElementById('success-screen').classList.add('show');
     document.getElementById('succ-title').textContent = tipo + " REGISTRADA";
@@ -493,13 +446,14 @@ function renderQuickWorkers() {
     c.innerHTML = pres.map(w => `<div style="font-size:0.85rem; padding:8px 0; border-bottom:1px solid var(--border)">✅ <strong style="color:var(--text)">${w.name}</strong> <span style="color:var(--green); float:right">${w.lastTime}</span></div>`).join('');
 }
 
-// --- 3. EQUIPO (CAPATAZ) ---
+// --- 3. EQUIPO ---
 function addWorker() {
     if(!currentObraId) return showToast('⚠️','Aviso','Selecciona obra primero');
     const name = document.getElementById('nw-name').value;
     if(!name) return;
-    workers.push({ id: Date.now(), obraId: currentObraId, name, rut: document.getElementById('nw-rut').value, role: document.getElementById('nw-role').value, present: false, lastTime: '--:--' });
+    workers.push({ id: Date.now(), obraId: currentObraId, name, role: document.getElementById('nw-role').value, present: false, lastTime: '--:--' });
     saveData(); closeModal('modal-worker'); renderEquipo();
+    document.getElementById('nw-name').value = '';
 }
 
 function renderEquipo() {
@@ -510,43 +464,19 @@ function renderEquipo() {
     document.getElementById('cnt-a').textContent = wObra.length - p;
     document.getElementById('cnt-t').textContent = wObra.length;
 
-    const list = document.getElementById('worker-full-list');
-    list.innerHTML = wObra.map(w => `
-        <div class="worker-item" onclick="openDetail(${w.id})">
+    document.getElementById('worker-full-list').innerHTML = wObra.map(w => `
+        <div class="worker-item">
             <div class="worker-avatar">${w.name[0]}</div>
             <div class="worker-info"><div class="worker-name">${w.name}</div><div class="worker-role">${w.role}</div></div>
             <div>
-                <div class="worker-time-val" style="color:${w.present?'var(--green)':'var(--muted)'}">${w.present?'Presente':'Ausente'}</div>
-                <div style="font-size:0.65rem; color:var(--muted); text-align:right">Ult: ${w.lastTime}</div>
+                <div style="font-size:0.82rem; font-weight:600; text-align:right; color:${w.present?'var(--green)':'var(--muted)'}">${w.present?'En Obra':'Fuera'}</div>
+                <div style="font-size:0.65rem; color:var(--muted); text-align:right">${w.lastTime}</div>
             </div>
         </div>
     `).join('');
 }
 
-function openDetail(id) {
-    selWorkerId = id;
-    const w = workers.find(x => x.id === id);
-    document.getElementById('det-av').textContent = w.name[0];
-    document.getElementById('det-name').textContent = w.name;
-    document.getElementById('det-sub').textContent = `${w.role} | ${w.rut}`;
-    document.getElementById('det-name-in').value = w.name;
-    openModal('modal-detail');
-}
-
-function saveWorkerEdit() {
-    const w = workers.find(x => x.id === selWorkerId);
-    w.name = document.getElementById('det-name-in').value;
-    saveData(); closeModal('modal-detail'); renderEquipo();
-}
-
-function fireWorker() {
-    if(confirm('¿Eliminar trabajador de la obra?')) {
-        workers = workers.filter(x => x.id !== selWorkerId);
-        saveData(); closeModal('modal-detail'); renderEquipo();
-    }
-}
-
-// --- 4. REPORTES Y CSV ---
+// --- 4. REPORTES ---
 function renderReportes() {
     if(!currentObraId) return;
     const wObra = workers.filter(w => w.obraId === currentObraId);
@@ -556,22 +486,25 @@ function renderReportes() {
     const logsObra = asistencia.filter(a => a.obraId === currentObraId);
     document.getElementById('rep-logs').textContent = logsObra.filter(a => a.fecha === hoy).length;
 
-    const tbody = document.getElementById('rep-tbody');
-    tbody.innerHTML = wObra.map(w => {
+    document.getElementById('rep-tbody').innerHTML = wObra.map(w => {
         const logsTrabajador = logsObra.filter(a => a.workerId === w.id && a.tipo === 'ENTRADA');
         const diasUnicos = new Set(logsTrabajador.map(a => a.fecha)).size;
-        return `<tr><td><strong>${w.name.split(' ')[0]}</strong></td><td>${diasUnicos}</td><td style="color:var(--accent); font-weight:bold">${diasUnicos * 8}h</td></tr>`;
+        return `<tr><td><strong>${w.name}</strong></td><td>${diasUnicos}</td><td style="color:var(--accent); font-weight:bold">${diasUnicos * 8}h</td></tr>`;
     }).join('');
 }
 
 function exportarCSV() {
-    if(asistencia.length === 0) return showToast('⚠️','Vacio','No hay registros');
+    if(!currentObraId) return showToast('⚠️','Aviso','Selecciona obra');
+    const logsObra = asistencia.filter(a => a.obraId === currentObraId);
+    if(logsObra.length === 0) return showToast('⚠️','Vacio','No hay registros');
+    
     let csv = "Fecha;Hora;Obra;Trabajador;Tipo\n";
-    asistencia.forEach(a => { csv += `${a.fecha};${a.hora};${obras.find(o=>o.id===a.obraId)?.name || 'N/A'};${a.workerName};${a.tipo}\n`; });
+    logsObra.forEach(a => { csv += `${a.fecha};${a.hora};${obras.find(o=>o.id===a.obraId)?.name || 'N/A'};${a.workerName};${a.tipo}\n`; });
+    
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = `Asistencia_ObraCheck_${new Date().toLocaleDateString('es-CL')}.csv`;
+    link.download = `Asistencia_${new Date().toLocaleDateString('es-CL')}.csv`;
     link.click();
 }
 
@@ -579,7 +512,6 @@ function exportarCSV() {
 function renderAjustes() {
     if(!currentObraId) return;
     const o = obras.find(x => x.id === currentObraId);
-    document.getElementById('aj-dir').value = o.addr || '';
     document.getElementById('aj-radio').value = o.radio;
 }
 
@@ -594,21 +526,22 @@ function recapturarGPS() {
     showToast('📡', 'Buscando GPS', 'Espere...');
     navigator.geolocation.getCurrentPosition(pos => {
         o.lat = pos.coords.latitude; o.lon = pos.coords.longitude;
-        saveData(); showToast('✅', 'GPS Actualizado', 'Centro de obra reasignado');
+        saveData(); showToast('✅', 'GPS Actualizado', 'Centro reasignado');
     }, () => showToast('❌', 'Error', 'No se pudo leer GPS'), {enableHighAccuracy: true, maximumAge:0});
 }
 
 function eliminarObra() {
-    if(confirm('🚨 ¿ESTÁS SEGURO? Se borrará la obra y sus trabajadores.')) {
+    if(confirm('🚨 ¿ESTÁS SEGURO? Se borrará la obra, sus trabajadores y todo el historial.')) {
         obras = obras.filter(x => x.id !== currentObraId);
         workers = workers.filter(x => x.obraId !== currentObraId);
         asistencia = asistencia.filter(x => x.obraId !== currentObraId);
         currentObraId = null; saveData();
-        document.querySelectorAll('.nav-item')[0].click(); // volver a obras
+        document.querySelectorAll('.nav-item')[0].click();
+        showToast('🗑️', 'Eliminado', 'Obra borrada');
     }
 }
 
-// INICIO
+// INIT
 renderObras();
 </script>
 </body>
