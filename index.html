@@ -221,45 +221,10 @@ select.input-field { cursor:pointer; }
       <div class="screen-header" style="display:flex;justify-content:space-between;align-items:center">
         <div>
           <div class="screen-title">Mis Obras</div>
-          <div class="screen-sub">2 activas · 1 cerrada</div>
+          <div class="screen-sub" id="obras-sub">0 activas</div>
         </div>
       </div>
-      <div class="gap16">
-        <div class="obra-card" onclick="goToObra('Casa Familia Pérez','Av. Las Condes 4521, Las Condes')">
-          <div class="obra-top">
-            <div class="obra-name">Casa Familia Pérez</div>
-            <div class="obra-status activa">Activa</div>
-          </div>
-          <div class="obra-addr">📍 Av. Las Condes 4521, Las Condes</div>
-          <div class="obra-meta">
-            <div class="obra-meta-item">👷 <strong>8</strong> trabajadores</div>
-            <div class="obra-meta-item">📅 Sem <strong>3</strong></div>
-            <div class="obra-meta-item">⭕ Radio <strong>80m</strong></div>
-          </div>
-        </div>
-        <div class="obra-card" onclick="goToObra('Edificio Norte','Ruta 5 Norte Km 12, Quilicura')">
-          <div class="obra-top">
-            <div class="obra-name">Edificio Comercial Norte</div>
-            <div class="obra-status activa">Activa</div>
-          </div>
-          <div class="obra-addr">📍 Ruta 5 Norte Km 12, Quilicura</div>
-          <div class="obra-meta">
-            <div class="obra-meta-item">👷 <strong>12</strong> trabajadores</div>
-            <div class="obra-meta-item">📅 Sem <strong>7</strong></div>
-            <div class="obra-meta-item">⭕ Radio <strong>100m</strong></div>
-          </div>
-        </div>
-        <div class="obra-card inactive" onclick="showToast('📁','Obra cerrada','Esta obra está inactiva y archivada')">
-          <div class="obra-top">
-            <div class="obra-name">Remodelación Oficinas Sur</div>
-            <div class="obra-status inactiva">Cerrada</div>
-          </div>
-          <div class="obra-addr">📍 Av. Grecia 770, Ñuñoa</div>
-          <div class="obra-meta">
-            <div class="obra-meta-item">👷 <strong>5</strong> trabajadores</div>
-            <div class="obra-meta-item">📅 Finalizada</div>
-          </div>
-        </div>
+      <div class="gap16" id="obras-list-container">
         <div class="h80"></div>
       </div>
     </div>
@@ -319,7 +284,7 @@ select.input-field { cursor:pointer; }
 
           <div class="btn-row">
             <button class="btn-primary" style="background:var(--surface2);color:var(--text);border:1px solid var(--border)" onclick="showToast('🖨️','Imprimiendo','QR enviado a impresora')">🖨️ Imprimir</button>
-            <button class="btn-primary blue" onclick="simularEscaneo()">📱 Demo: Escanear</button>
+            <button class="btn-primary blue" onclick="simularEscaneo()">📱 Probar escaneo</button>
           </div>
 
           <div>
@@ -429,27 +394,20 @@ select.input-field { cursor:pointer; }
         <div class="screen-sub">Exporta en Excel o PDF</div>
       </div>
       <div class="report-header">
-        <div class="report-obra">🏗️ Casa Familia Pérez</div>
-        <div class="report-week">Semana 10 – 15 marzo, 2026</div>
+        <div class="report-obra" id="rep-obra-name">🏗️ Selecciona una obra</div>
+        <div class="report-week" id="rep-semana">Semana actual</div>
         <div class="report-stats">
-          <div><div class="rstat-val" style="color:var(--accent)">8</div><div class="rstat-lbl">Trabajadores</div></div>
-          <div><div class="rstat-val" style="color:var(--green)">94%</div><div class="rstat-lbl">Asistencia</div></div>
-          <div><div class="rstat-val" style="color:var(--accent2)">342h</div><div class="rstat-lbl">Horas</div></div>
+          <div><div class="rstat-val" style="color:var(--accent)" id="rep-total">0</div><div class="rstat-lbl">Trabajadores</div></div>
+          <div><div class="rstat-val" style="color:var(--green)" id="rep-porc">0%</div><div class="rstat-lbl">Asistencia</div></div>
+          <div><div class="rstat-val" style="color:var(--accent2)" id="rep-horas">0h</div><div class="rstat-lbl">Horas</div></div>
         </div>
       </div>
       <div class="p16">
         <div class="section-label" style="padding-left:0;margin-bottom:8px">Detalle por trabajador</div>
         <table class="rt">
           <thead><tr><th>Trabajador</th><th>Días</th><th>Horas</th><th>Asist.</th></tr></thead>
-          <tbody>
-            <tr><td><b>Pedro Soto</b></td><td class="days-cell">5</td><td class="hrs-cell">47h</td><td class="perc-cell">100%</td></tr>
-            <tr><td><b>Juan Molina</b></td><td class="days-cell">4</td><td class="hrs-cell">38h</td><td class="perc-cell">80%</td></tr>
-            <tr><td><b>Carlos Vega</b></td><td class="days-cell">5</td><td class="hrs-cell">45h</td><td class="perc-cell">100%</td></tr>
-            <tr><td><b>Mario Fuentes</b></td><td class="days-cell">5</td><td class="hrs-cell">44h</td><td class="perc-cell">100%</td></tr>
-            <tr><td><b>Roberto Díaz</b></td><td class="days-cell">3</td><td class="hrs-cell">28h</td><td class="perc-cell">60%</td></tr>
-            <tr><td><b>Luis Herrera</b></td><td class="days-cell">5</td><td class="hrs-cell">46h</td><td class="perc-cell">100%</td></tr>
-            <tr><td><b>Felipe Araya</b></td><td class="days-cell">5</td><td class="hrs-cell">47h</td><td class="perc-cell">100%</td></tr>
-            <tr><td><b>Rodrigo Núñez</b></td><td class="days-cell">4</td><td class="hrs-cell">37h</td><td class="perc-cell">80%</td></tr>
+          <tbody id="rep-tbody">
+            <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Sin datos aún</td></tr>
           </tbody>
         </table>
       </div>
@@ -580,20 +538,61 @@ select.input-field { cursor:pointer; }
 </div>
 
 <script>
-// DATA
-let workers = [
-  {id:1,name:'Pedro Soto Morales',role:'Maestro primera',rut:'12.345.678-9',present:true,time:'07:58'},
-  {id:2,name:'Juan Molina Rojas',role:'Maestro segunda',rut:'13.456.789-0',present:true,time:'08:05'},
-  {id:3,name:'Carlos Vega Díaz',role:'Ayudante',rut:'14.567.890-1',present:true,time:'07:55'},
-  {id:4,name:'Mario Fuentes',role:'Gasfiter',rut:'15.678.901-2',present:false,time:null},
-  {id:5,name:'Roberto Díaz',role:'Electricista',rut:'16.789.012-3',present:true,time:'08:12'},
-  {id:6,name:'Luis Herrera',role:'Ayudante',rut:'17.890.123-4',present:true,time:'07:50'},
-  {id:7,name:'Felipe Araya',role:'Maestro primera',rut:'18.901.234-5',present:false,time:null},
-  {id:8,name:'Rodrigo Núñez',role:'Ayudante',rut:'19.012.345-6',present:false,time:null},
-];
+// DATA — guardado en localStorage para persistencia real
+let workers = JSON.parse(localStorage.getItem('oc_workers') || '[]');
+let obras = JSON.parse(localStorage.getItem('oc_obras') || '[]');
+let asistencia = JSON.parse(localStorage.getItem('oc_asistencia') || '[]');
 const COLORS = ['#f97316','#22c55e','#3b82f6','#f59e0b','#ec4899','#8b5cf6','#14b8a6','#ef4444'];
 let selWorker = null;
 let radioVal = 80;
+let currentObraId = obras.length ? obras[0].id : null;
+
+function saveData(){
+  localStorage.setItem('oc_workers', JSON.stringify(workers));
+  localStorage.setItem('oc_obras', JSON.stringify(obras));
+  localStorage.setItem('oc_asistencia', JSON.stringify(asistencia));
+}
+
+// OBRAS RENDER
+function renderObras(){
+  const container = document.getElementById('obras-list-container');
+  const activas = obras.filter(o=>o.activa).length;
+  document.getElementById('obras-sub').textContent = `${activas} activa${activas!==1?'s':''} · ${obras.length} total`;
+
+  if(!obras.length){
+    container.innerHTML = `
+      <div style="text-align:center;padding:40px 20px;color:var(--muted)">
+        <div style="font-size:3rem;margin-bottom:12px">🏗️</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;margin-bottom:8px;color:var(--text)">Sin obras registradas</div>
+        <div style="font-size:0.82rem">Presiona el botón <strong style="color:var(--accent)">+</strong> para crear tu primera obra</div>
+      </div>
+      <div class="h80"></div>`;
+    return;
+  }
+
+  container.innerHTML = obras.map(o => {
+    const wCount = workers.filter(w=>w.obraId===o.id).length;
+    return `<div class="obra-card${!o.activa?' inactive':''}" onclick="selectObra(${o.id})">
+      <div class="obra-top">
+        <div class="obra-name">${o.name}</div>
+        <div class="obra-status ${o.activa?'activa':'inactiva'}">${o.activa?'Activa':'Cerrada'}</div>
+      </div>
+      <div class="obra-addr">📍 ${o.addr||'Sin dirección'}</div>
+      <div class="obra-meta">
+        <div class="obra-meta-item">👷 <strong>${wCount}</strong> trabajadores</div>
+        <div class="obra-meta-item">⭕ Radio <strong>${o.radio||80}m</strong></div>
+      </div>
+    </div>`;
+  }).join('') + '<div class="h80"></div>';
+}
+
+function selectObra(id){
+  currentObraId = id;
+  const o = obras.find(x=>x.id===id);
+  if(!o) return;
+  workers = JSON.parse(localStorage.getItem('oc_workers')||'[]').filter(w=>w.obraId===id);
+  goToObra(o.name, o.addr);
+}
 
 // CLOCK
 function updateClock(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}); }
@@ -608,6 +607,7 @@ function goScreen(n){
   document.getElementById('fab').style.display = n==='obras'?'flex':'none';
   if(n==='capataz') renderWorkers();
   if(n==='marcar') renderQuick();
+  if(n==='reporte') renderReporte();
 }
 
 function goToObra_nav(name,addr){
@@ -632,7 +632,14 @@ function renderWorkers(){
   document.getElementById('cnt-p').textContent=p;
   document.getElementById('cnt-a').textContent=a;
   document.getElementById('cnt-t').textContent=workers.length;
-  const container = document.getElementById('worker-full-list');
+  if(!workers.length){
+    container.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--muted)">
+      <div style="font-size:2.5rem;margin-bottom:10px">👷</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text);margin-bottom:6px">Sin trabajadores</div>
+      <div style="font-size:0.8rem">Presiona <strong style="color:var(--accent)">+</strong> para agregar</div>
+    </div><div class="h80"></div>`;
+    return;
+  }
   const row = (w,absent=false) => `<div class="worker-item${absent?' absent':''}" onclick="openDetail(${w.id})">
     <div class="worker-avatar" style="background:${col(w.id)}22;color:${col(w.id)}">${ini(w.name)}</div>
     <div class="worker-info"><div class="worker-name">${w.name}</div><div class="worker-role">${w.role}</div></div>
@@ -670,25 +677,37 @@ function openDetail(id){
 }
 
 function saveWorker(){
-  const w=workers.find(x=>x.id===selWorker);
-  w.name=document.getElementById('det-name-in').value||w.name;
-  w.role=document.getElementById('det-role-in').value;
+  const allWorkers = JSON.parse(localStorage.getItem('oc_workers')||'[]');
+  const idx = allWorkers.findIndex(x=>x.id===selWorker);
+  if(idx>-1){
+    allWorkers[idx].name=document.getElementById('det-name-in').value||allWorkers[idx].name;
+    allWorkers[idx].role=document.getElementById('det-role-in').value;
+    localStorage.setItem('oc_workers', JSON.stringify(allWorkers));
+    workers = allWorkers.filter(w=>w.obraId===currentObraId);
+  }
   closeModal('modal-detail'); renderWorkers();
-  showToast('💾','Guardado',`${w.name} actualizado`);
+  showToast('💾','Guardado','Datos actualizados');
 }
 
 function fireWorker(){
-  const w=workers.find(x=>x.id===selWorker);
-  workers=workers.filter(x=>x.id!==selWorker);
+  const allWorkers = JSON.parse(localStorage.getItem('oc_workers')||'[]');
+  const w = allWorkers.find(x=>x.id===selWorker);
+  const filtered = allWorkers.filter(x=>x.id!==selWorker);
+  localStorage.setItem('oc_workers', JSON.stringify(filtered));
+  workers = filtered.filter(x=>x.obraId===currentObraId);
   closeModal('modal-detail'); renderWorkers();
-  showToast('🚫','Dado de baja',`${w.name} eliminado del equipo`);
+  showToast('🚫','Dado de baja',`${w?w.name:'Trabajador'} eliminado del equipo`);
 }
 
 function addWorker(){
   const name=document.getElementById('nw-name').value.trim();
   if(!name){showToast('⚠️','Error','Ingresa el nombre');return;}
-  const id=workers.length?Math.max(...workers.map(w=>w.id))+1:1;
-  workers.push({id,name,role:document.getElementById('nw-role').value,rut:document.getElementById('nw-rut').value||'—',present:false,time:null});
+  const allWorkers = JSON.parse(localStorage.getItem('oc_workers')||'[]');
+  const id = Date.now();
+  const newW = {id,name,role:document.getElementById('nw-role').value,rut:document.getElementById('nw-rut').value||'—',present:false,time:null,obraId:currentObraId};
+  allWorkers.push(newW);
+  localStorage.setItem('oc_workers', JSON.stringify(allWorkers));
+  workers = allWorkers.filter(w=>w.obraId===currentObraId);
   document.getElementById('nw-name').value='';
   document.getElementById('nw-rut').value='';
   closeModal('modal-worker'); renderWorkers();
@@ -744,25 +763,37 @@ function volverQR(){
 function doRegistro(tipo){
   const sel = document.getElementById('scan-worker-select');
   const wId = parseInt(sel.value);
+  if(!wId){showToast('⚠️','Selecciona tu nombre','Elige quién eres primero');return;}
   const now = new Date();
   const t = now.toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
+  const dateStr = now.toLocaleDateString('es-CL');
 
+  // Actualizar estado trabajador
+  const allWorkers = JSON.parse(localStorage.getItem('oc_workers')||'[]');
+  const idx = allWorkers.findIndex(x=>x.id===wId);
   let wName = 'Trabajador';
-  if(wId){
-    const w = workers.find(x=>x.id===wId);
-    if(w && tipo==='entrada'){ w.present=true; w.time=t; }
-    if(w) wName = w.name;
+  if(idx>-1){
+    wName = allWorkers[idx].name;
+    if(tipo==='entrada'){ allWorkers[idx].present=true; allWorkers[idx].time=t; }
+    else { allWorkers[idx].present=false; allWorkers[idx].timeOut=t; }
+    localStorage.setItem('oc_workers', JSON.stringify(allWorkers));
+    workers = allWorkers.filter(w=>w.obraId===currentObraId);
   }
+
+  // Guardar registro de asistencia
+  const reg = {id:Date.now(), workerId:wId, workerName:wName, tipo, hora:t, fecha:dateStr, obraId:currentObraId};
+  asistencia.push(reg);
+  saveData();
 
   const circ = document.getElementById('success-circle');
   if(tipo==='entrada'){
     circ.style.background='rgba(34,197,94,0.15)'; circ.style.border='2px solid var(--green)';
     document.getElementById('success-title').textContent='🟢 ENTRADA REGISTRADA';
-    document.getElementById('success-detail').textContent=`${t} · GPS verificado · Guardado`;
+    document.getElementById('success-detail').textContent=`${t} · ${dateStr} · GPS verificado`;
   } else {
     circ.style.background='rgba(239,68,68,0.15)'; circ.style.border='2px solid var(--red)';
     document.getElementById('success-title').textContent='🔴 SALIDA REGISTRADA';
-    document.getElementById('success-detail').textContent=`${t} · Jornada completada · Guardado`;
+    document.getElementById('success-detail').textContent=`${t} · ${dateStr} · Guardado`;
   }
   document.getElementById('success-name').textContent = wName;
   document.getElementById('scan-screen').style.display='none';
@@ -786,10 +817,15 @@ function goToObra(name, addr){
 // OBRA
 function createObra(){
   const name=document.getElementById('new-obra-name').value.trim();
+  const addr=document.getElementById('new-obra-addr').value.trim();
   if(!name){showToast('⚠️','Falta el nombre','Ingresa el nombre de la obra');return;}
+  const id = Date.now();
+  obras.push({id, name, addr, radio:radioVal, activa:true, created:new Date().toLocaleDateString('es-CL')});
+  saveData();
   closeModal('modal-obra');
   document.getElementById('new-obra-name').value='';
   document.getElementById('new-obra-addr').value='';
+  renderObras();
   showToast('🏗️','Obra creada',`${name} registrada con GPS actual`);
 }
 
@@ -820,8 +856,47 @@ function showToast(icon,title,msg){
   t._t=setTimeout(()=>t.classList.remove('show'),3000);
 }
 
+// REPORTE
+function renderReporte(){
+  const obraActual = obras.find(o=>o.id===currentObraId);
+  const obraName = obraActual ? obraActual.name : 'Sin obra seleccionada';
+  document.getElementById('rep-obra-name').textContent = '🏗️ ' + obraName;
+
+  const hoy = new Date();
+  const semana = `Semana del ${new Date(hoy.setDate(hoy.getDate()-hoy.getDay()+1)).toLocaleDateString('es-CL')}`;
+  document.getElementById('rep-semana').textContent = semana;
+
+  const allW = JSON.parse(localStorage.getItem('oc_workers')||'[]').filter(w=>w.obraId===currentObraId);
+  const regObraHoy = asistencia.filter(a=>a.obraId===currentObraId);
+
+  document.getElementById('rep-total').textContent = allW.length;
+  const presHoy = allW.filter(w=>w.present).length;
+  const porc = allW.length ? Math.round(presHoy/allW.length*100) : 0;
+  document.getElementById('rep-porc').textContent = porc+'%';
+
+  const tbody = document.getElementById('rep-tbody');
+  if(!allW.length){
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Sin trabajadores en esta obra</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = allW.map(w => {
+    const regs = regObraHoy.filter(r=>r.workerId===w.id);
+    const dias = [...new Set(regs.map(r=>r.fecha))].length;
+    const hrs = dias * 8;
+    const p = allW.length ? Math.round(dias/5*100) : 0;
+    return `<tr>
+      <td><b>${w.name.split(' ').slice(0,2).join(' ')}</b></td>
+      <td class="days-cell">${dias}</td>
+      <td class="hrs-cell">${hrs}h</td>
+      <td class="perc-cell">${Math.min(p,100)}%</td>
+    </tr>`;
+  }).join('');
+}
+
 // INIT
+renderObras();
 renderQuick();
+renderReporte();
 </script>
 </body>
 </html>
