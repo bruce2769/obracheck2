@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ObraCheck Pro — Asistencia GPS</title>
+<title>ObraCheck Pro — Asistencia de Obras</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#f97316">
 <style>
@@ -15,91 +15,134 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
 
-.topbar { width:100%; display:flex; align-items:center; justify-content:space-between; padding:14px 20px; background:rgba(13,15,14,0.97); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:200; backdrop-filter:blur(12px); }
+.topbar { width:100%; display:flex; align-items:center; justify-content:space-between; padding:14px 20px; background:rgba(13,15,14,0.97); border-bottom:1px solid var(--border); position:sticky;top:0;z-index:200; backdrop-filter:blur(12px); }
 .logo { font-family:'Barlow Condensed',sans-serif; font-size:1.5rem; font-weight:900; }
 .logo span { color:var(--accent); }
-.logo sub { font-size:0.5rem; color:var(--muted); vertical-align:bottom; margin-left:2px; letter-spacing:1px; text-transform:uppercase; }
+.logo sub { font-size:0.5rem; color:var(--muted); margin-left:2px; letter-spacing:1px; text-transform:uppercase; }
 
 .phone-wrap { width:100%; max-width:420px; margin:20px auto 40px; padding:0 12px; }
-.phone { background:var(--surface); border-radius:28px; border:1px solid var(--border); overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,0.6); min-height:82vh; display:flex; flex-direction:column; position:relative;}
+.phone { background:var(--surface); border-radius:28px; border:1px solid var(--border); overflow:hidden; box-shadow:0 40px 80px rgba(0,0,0,0.6); min-height:78vh; display:flex; flex-direction:column; }
 
 .status-bar { display:flex; justify-content:space-between; align-items:center; padding:10px 20px 6px; font-size:0.72rem; color:var(--muted); border-bottom:1px solid var(--border); flex-shrink:0; }
 .status-bar .stime { font-weight:600; color:var(--text); font-size:0.8rem; }
 .gps-pulse { width:6px; height:6px; border-radius:50%; background:var(--green); display:inline-block; animation:blink 2s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-.screens { flex:1; overflow-y:auto; padding-bottom:80px; }
-.screen { display:none; height:100%; }
-.screen.active { display:block; animation:fadeIn 0.2s; }
+.screens { flex:1; overflow:hidden; }
+.screen { display:none; height:100%; overflow-y:auto; }
+.screen::-webkit-scrollbar { width:0; }
+.screen.active { display:block; animation: fadeIn 0.2s; }
 @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
-.bottom-nav { position:absolute; bottom:0; width:100%; display:flex; border-top:1px solid var(--border); background:var(--surface); flex-shrink:0; z-index:150;}
-.nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 4px 14px; font-size:0.58rem; color:var(--muted); cursor:pointer; transition:all 0.2s; border:none; background:transparent; text-transform:uppercase; }
+.bottom-nav { display:flex; border-top:1px solid var(--border); background:var(--surface); flex-shrink:0; }
+.nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 4px 14px; font-size:0.58rem; color:var(--muted); cursor:pointer; transition:all 0.2s; border:none; background:transparent; letter-spacing:0.5px; text-transform:uppercase; }
 .nav-item .ni { font-size:1.25rem; }
 .nav-item.active { color:var(--accent); }
+.ni-dot { width:4px; height:4px; border-radius:50%; background:transparent; margin:0 auto; }
+.nav-item.active .ni-dot { background:var(--accent); }
 
 .screen-header { padding:20px 20px 14px; border-bottom:1px solid var(--border); }
 .screen-title { font-family:'Barlow Condensed',sans-serif; font-size:1.6rem; font-weight:800; }
 .screen-sub { font-size:0.77rem; color:var(--muted); margin-top:3px; }
 
-/* Cards & Lists */
-.obra-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; cursor:pointer; transition:all 0.15s; position:relative; overflow:hidden; margin-bottom:10px; }
+/* Obras Cards */
+.obra-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; cursor:pointer; transition:all 0.15s; position:relative; overflow:hidden; margin-bottom:10px;}
 .obra-card::before { content:''; position:absolute; left:0;top:0;bottom:0; width:3px; background:var(--accent); border-radius:3px 0 0 3px; }
+.obra-card.inactive::before { background:var(--muted); }
+.obra-card:active { transform:scale(0.98); background:#1a1f1c; }
 .obra-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
 .obra-name { font-family:'Barlow Condensed',sans-serif; font-size:1.1rem; font-weight:800; }
-.obra-status { font-size:0.62rem; padding:3px 8px; border-radius:10px; font-weight:700; text-transform:uppercase; background:rgba(34,197,94,0.15); color:var(--green); }
+.obra-status { font-size:0.62rem; padding:3px 8px; border-radius:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+.obra-status.activa { background:rgba(34,197,94,0.15); color:var(--green); }
+.obra-status.inactiva { background:rgba(107,122,112,0.15); color:var(--muted); }
 .obra-addr { font-size:0.77rem; color:var(--muted); margin-bottom:10px; }
-.obra-meta { display:flex; gap:12px; font-size:0.7rem; color:var(--muted); }
+.obra-meta { display:flex; gap:12px; }
+.obra-meta-item { font-size:0.7rem; display:flex; align-items:center; gap:4px; color:var(--muted); }
+.obra-meta-item strong { color:var(--text); }
 
-.worker-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border); cursor:pointer; }
-.worker-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; font-weight:800; flex-shrink:0; background:rgba(249,115,22,0.1); color:var(--accent);}
+/* Workers */
+.worker-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-bottom:1px solid var(--border); cursor:pointer; transition:background 0.15s; }
+.worker-item:active { background:var(--surface2); }
+.worker-avatar { width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-size:0.88rem; font-weight:800; flex-shrink:0; }
 .worker-info { flex:1; min-width:0; }
 .worker-name { font-size:0.9rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .worker-role { font-size:0.7rem; color:var(--muted); }
+.worker-time-val { font-size:0.82rem; color:var(--green); font-weight:600; text-align:right; }
+.worker-time-label { font-size:0.62rem; color:var(--muted); text-align:right; }
+.absent .worker-time-val { color:var(--muted); }
 
 /* Buttons & Inputs */
 .btn-row { display:flex; gap:8px; }
-.btn-primary { width:100%; padding:15px; border-radius:12px; border:none; background:var(--accent); color:#000; font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; }
+.btn-primary { width:100%; padding:15px; border-radius:12px; border:none; background:var(--accent); color:#000; font-family:'Barlow Condensed',sans-serif; font-size:1.05rem; font-weight:800; letter-spacing:0.5px; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; }
+.btn-primary:active { transform:scale(0.97); opacity:0.9; }
 .btn-primary.green { background:var(--green); }
 .btn-primary.red { background:var(--red); }
 .btn-primary.blue { background:var(--blue); }
 .btn-primary:disabled { background:var(--border); color:var(--muted); cursor:not-allowed; }
 .btn-secondary { width:100%; padding:13px; border-radius:12px; border:1px solid var(--border); background:transparent; color:var(--text); font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; margin-top:8px; }
-.btn-danger { width:100%; padding:13px; border-radius:12px; border:1px solid rgba(239,68,68,0.3); background:rgba(239,68,68,0.08); color:var(--red); font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; margin-top:8px; }
+.btn-danger { width:100%; padding:13px; border-radius:12px; border:1px solid rgba(239,68,68,0.3); background:rgba(239,68,68,0.08); color:var(--red); font-family:'Barlow Condensed',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s; margin-top:8px; }
 
 .input-group { margin-bottom:14px; }
 .input-label { font-size:0.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; display:block; }
 .input-field { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:12px 14px; color:var(--text); font-family:'Barlow',sans-serif; font-size:0.9rem; outline:none; }
+.input-field:focus { border-color:var(--accent); }
 
-.fab { position:fixed; bottom:96px; right:calc(50% - 196px); width:50px; height:50px; border-radius:50%; background:var(--accent); border:none; color:#000; font-size:1.4rem; font-weight:bold; cursor:pointer; box-shadow:0 8px 24px rgba(249,115,22,0.45); display:flex; align-items:center; justify-content:center; z-index:100; }
-@media(max-width:440px){ .fab { right:20px; } }
-
-/* Modals & GPS */
-.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; display:none; align-items:flex-end; justify-content:center; }
-.modal-overlay.open { display:flex; }
-.modal { background:var(--surface); border-radius:24px 24px 0 0; border:1px solid var(--border); padding:24px 24px 36px; width:100%; max-width:420px; animation:slideUp 0.3s; }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-.modal-handle { width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 20px; }
-
+/* GPS & UI Elements */
 .gps-status { padding:12px 16px; border-radius:12px; display:flex; align-items:center; gap:10px; font-size:0.82rem; margin-bottom:15px;}
 .gps-status.ok { background:rgba(34,197,94,0.1); border:1px solid rgba(34,197,94,0.2); color:var(--green); }
 .gps-status.fail { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); color:var(--red); }
 .gps-status.checking { background:rgba(59,130,246,0.1); border:1px solid rgba(59,130,246,0.2); color:var(--blue); justify-content:center;}
+.gps-icon { font-size:1.2rem; }
 
-.toast { position:fixed; top:70px; left:50%; transform:translateX(-50%); opacity:0; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:13px 18px; display:flex; align-items:center; gap:10px; z-index:500; transition:all 0.35s; pointer-events:none; }
-.toast.show { opacity:1; }
+.switch-row { display:flex; justify-content:space-between; align-items:center; padding:13px 16px; border-bottom:1px solid var(--border); }
+.sw-label { font-size:0.88rem; font-weight:500; }
+.sw-sub { font-size:0.7rem; color:var(--muted); }
+.switch { width:44px; height:24px; background:var(--surface2); border-radius:12px; border:1px solid var(--border); position:relative; cursor:pointer; transition:all 0.2s; flex-shrink:0; }
+.switch.on { background:var(--green); border-color:var(--green); }
+.switch::after { content:''; position:absolute; width:18px; height:18px; background:#fff; border-radius:50%; top:2px; left:2px; transition:all 0.2s; }
+.switch.on::after { left:22px; }
 
+.radio-group { display:flex; gap:8px; }
+.radio-opt { flex:1; padding:10px 6px; border:1px solid var(--border); border-radius:10px; text-align:center; font-size:0.8rem; cursor:pointer; transition:all 0.2s; }
+.radio-opt.sel { border-color:var(--accent); background:rgba(249,115,22,0.1); color:var(--accent); font-weight:700; }
+
+.fab { position:fixed; bottom:86px; right:calc(50% - 196px); width:50px; height:50px; border-radius:50%; background:var(--accent); border:none; color:#000; font-size:1.4rem; cursor:pointer; box-shadow:0 8px 24px rgba(249,115,22,0.45); display:flex; align-items:center; justify-content:center; transition:all 0.2s; z-index:100; }
+@media(max-width:440px){ .fab { right:20px; } }
+
+/* Modals & Toasts */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:300; display:none; align-items:flex-end; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal { background:var(--surface); border-radius:24px 24px 0 0; border:1px solid var(--border); border-bottom:none; padding:24px 24px 36px; width:100%; max-width:420px; animation:slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1); max-height:90vh; overflow-y:auto; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+.modal-handle { width:36px; height:4px; background:var(--border); border-radius:2px; margin:0 auto 20px; }
+.modal-title { font-family:'Barlow Condensed',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:16px; }
+
+.toast { position:fixed; top:70px; left:50%; transform:translateX(-50%) translateY(-20px); opacity:0; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:13px 18px; display:flex; align-items:center; gap:10px; font-size:0.83rem; z-index:500; max-width:360px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.5); transition:all 0.35s cubic-bezier(0.34,1.4,0.64,1); pointer-events:none; }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* Reportes */
+.report-header { margin:16px; background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(251,191,36,0.08)); border:1px solid rgba(249,115,22,0.2); border-radius:16px; padding:16px; }
+.report-obra { font-family:'Barlow Condensed',sans-serif; font-size:1.3rem; font-weight:800; }
+.report-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-top:14px; }
 .rstat-val { font-family:'Barlow Condensed',sans-serif; font-size:1.6rem; font-weight:900; text-align:center; }
-.rstat-lbl { font-size:0.62rem; color:var(--muted); text-transform:uppercase; text-align:center; }
-.rt { width:100%; border-collapse:collapse; font-size:0.8rem; margin-top:15px; }
-.rt th { text-align:left; padding:8px 10px; font-size:0.62rem; text-transform:uppercase; color:var(--muted); border-bottom:1px solid var(--border); }
-.rt td { padding:10px; border-bottom:1px solid rgba(42,51,48,0.5); }
-.section-label { padding:12px 16px 6px; font-size:0.62rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); font-weight:700; }
-.p16 { padding: 16px; }
+.rstat-lbl { font-size:0.62rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; text-align:center; }
+.rt { width:100%; border-collapse:collapse; font-size:0.8rem; }
+.rt thead th { text-align:left; padding:8px 10px; font-size:0.62rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); border-bottom:1px solid var(--border); font-weight:500; }
+.rt tbody td { padding:10px; border-bottom:1px solid rgba(42,51,48,0.5); }
+.days-cell { color:var(--accent2); font-weight:700; }
+.hrs-cell { color:var(--accent); font-weight:700; }
 
 .success-screen { display:none; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; text-align:center; min-height:400px; }
 .success-screen.show { display:flex; }
-.success-circle { width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:24px; }
+.success-circle { width:90px; height:90px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem; margin-bottom:24px; animation:popIn 0.5s; }
+@keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+.success-title { font-family:'Barlow Condensed',sans-serif; font-size:1.8rem; font-weight:900; margin-bottom:8px; }
+.success-sub { color:var(--muted); font-size:0.85rem; margin-bottom:4px; }
+.success-detail { font-size:0.77rem; color:var(--muted); margin-bottom:32px; }
+
+.p16 { padding:16px; }
+.h80 { height:80px; }
+.section-label { padding:12px 16px 6px; font-size:0.62rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); font-weight:700; }
 </style>
 </head>
 <body>
@@ -111,8 +154,9 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 <div class="phone-wrap">
 <div class="phone">
   <div class="status-bar">
-    <span class="stime" id="clock">00:00</span>
+    <span class="stime" id="clock">09:41</span>
     <span style="font-size:0.7rem">📍 GPS · <span class="gps-pulse"></span> Activo</span>
+    <span style="font-size:0.7rem">●●●○ LTE</span>
   </div>
 
   <div class="screens">
@@ -123,63 +167,85 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
         <div class="screen-sub" id="obras-sub">0 activas</div>
       </div>
       <div class="p16" id="obras-list-container"></div>
+      <div class="h80"></div>
     </div>
 
     <div class="screen" id="s-marcar">
       <div id="marcar-main">
         <div class="screen-header">
-          <div class="screen-title">Marcación</div>
+          <div class="screen-title">QR de Obra</div>
           <div class="screen-sub" id="marcar-sub">Selecciona una obra primero</div>
         </div>
-        <div class="p16">
-          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;margin-bottom:15px">
-            <div style="font-size:0.62rem;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700">PUNTO DE ASISTENCIA</div>
-            <div id="qr-obra-name" style="font-family:'Barlow Condensed';font-size:1.1rem;font-weight:800;margin-bottom:4px;color:var(--accent)">SIN OBRA</div>
+        <div class="p16" style="display:flex;flex-direction:column;gap:14px">
+          
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center">
+            <div style="font-size:0.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px;font-weight:700">QR FIJO DE ESTA OBRA</div>
+            <div style="display:inline-block;background:#fff;padding:12px;border-radius:12px;margin-bottom:14px">
+              <svg width="140" height="140" viewBox="0 0 140 140"><rect width="140" height="140" fill="white"/><rect x="20" y="20" width="100" height="100" fill="#111"/></svg>
+            </div>
+            <div id="qr-obra-name" style="font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:4px">SIN OBRA</div>
+            <div style="font-size:0.7rem;color:var(--muted)">El trabajador escanea este QR al llegar</div>
           </div>
-          <button class="btn-primary blue" onclick="iniciarEscaneoGPS()">📍 VALIDAR UBICACIÓN Y MARCAR</button>
-          <div class="section-label" style="padding-left:0;margin-top:20px">Personal Activo Hoy</div>
-          <div id="worker-quick"></div>
+
+          <div class="btn-row">
+            <button class="btn-primary" style="background:var(--surface2);color:var(--text);border:1px solid var(--border)" onclick="showToast('🖨️','Imprimiendo','QR enviado a impresora')">🖨️ Imprimir</button>
+            <button class="btn-primary blue" onclick="iniciarEscaneoGPS()">📱 Probar Escaneo</button>
+          </div>
+
+          <div>
+            <div class="section-label" style="padding-left:0">Presentes hoy</div>
+            <div id="worker-quick"></div>
+          </div>
+          <div class="h80"></div>
         </div>
       </div>
 
       <div id="scan-screen" style="display:none">
         <div style="background:var(--surface2);border-bottom:1px solid var(--border);padding:13px 16px;display:flex;align-items:center;gap:10px">
           <button onclick="volverQR()" style="background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer">←</button>
-          <div><div style="font-family:'Barlow Condensed';font-weight:800;font-size:1rem">ObraCheck GPS</div></div>
+          <div><div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem">ObraCheck</div><div style="font-size:0.66rem;color:var(--muted)">Registro de asistencia</div></div>
         </div>
 
         <div id="gps-checking" class="p16" style="text-align:center;padding-top:40px">
           <div style="font-size:3rem;margin-bottom:16px">📡</div>
-          <h2 style="font-family:'Barlow Condensed'">Verificando satélites...</h2>
-          <div class="gps-status checking">Calculando distancia real...</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800">Verificando ubicación...</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:8px;margin-bottom:20px">Calculando distancia real</div>
+          <div class="gps-status checking"><div style="font-size:0.82rem;font-weight:600">Obteniendo coordenadas satelitales...</div></div>
         </div>
 
         <div id="gps-ok" class="p16" style="display:none;flex-direction:column;gap:14px">
-          <div class="gps-status ok" id="gps-msg-ok">✅ Dentro del radio</div>
+          <div class="gps-status ok">
+            <span class="gps-icon">✅</span>
+            <div><div style="font-weight:700;font-size:0.88rem">Dentro del radio de obra</div><div style="font-size:0.7rem;opacity:0.8" id="gps-msg-ok"></div></div>
+          </div>
           <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px">
-            <label class="input-label">Selecciona tu nombre:</label>
-            <select class="input-field" id="scan-worker-select" style="margin-bottom:12px" onchange="validarBotonesRegistro()"></select>
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px">¿Quién eres?</div>
+            <select class="input-field" id="scan-worker-select" style="margin-bottom:12px" onchange="validarRegistro()"><option value="">— Selecciona tu nombre —</option></select>
             <div class="btn-row">
-              <button class="btn-primary green" id="btn-ent" onclick="doRegistro('ENTRADA')" disabled>ENTRADA</button>
-              <button class="btn-primary red" id="btn-sal" onclick="doRegistro('SALIDA')" disabled>SALIDA</button>
+              <button class="btn-primary green" id="btn-ent" onclick="doRegistro('ENTRADA')" disabled>🟢 ENTRADA</button>
+              <button class="btn-primary red" id="btn-sal" onclick="doRegistro('SALIDA')" disabled>🔴 SALIDA</button>
             </div>
           </div>
         </div>
 
         <div id="gps-fail" class="p16" style="display:none;flex-direction:column;gap:14px;text-align:center;padding-top:32px">
           <div style="font-size:3.5rem;margin-bottom:8px">🚫</div>
-          <h2 style="font-family:'Barlow Condensed';color:var(--red)">FUERA DE RANGO</h2>
-          <div class="gps-status fail" id="gps-msg-fail">❌ Estás muy lejos</div>
-          <button class="btn-secondary" onclick="iniciarEscaneoGPS()">🔄 Reintentar GPS</button>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.7rem;font-weight:900;color:var(--red)">FUERA DE LA OBRA</div>
+          <div class="gps-status fail">
+            <span class="gps-icon">❌</span>
+            <div><div style="font-weight:700;font-size:0.88rem">Fuera del radio permitido</div><div style="font-size:0.7rem;opacity:0.8" id="gps-msg-fail"></div></div>
+          </div>
+          <button class="btn-secondary" onclick="iniciarEscaneoGPS()">🔄 Reintentar</button>
           <button class="btn-secondary" onclick="volverQR()">← Volver</button>
         </div>
       </div>
 
       <div class="success-screen" id="success-screen">
         <div class="success-circle" id="succ-circ" style="background:rgba(34,197,94,0.15); border:2px solid var(--green)">✅</div>
-        <div style="font-family:'Barlow Condensed';font-size:1.8rem;font-weight:900" id="succ-title">REGISTRADO</div>
-        <div style="color:var(--muted);font-size:0.9rem;margin-bottom:30px" id="succ-name">Nombre</div>
-        <button class="btn-primary" onclick="volverQR()">Continuar</button>
+        <div class="success-title" id="succ-title">ENTRADA REGISTRADA</div>
+        <div class="success-sub" id="succ-name">Pedro Soto</div>
+        <div class="success-detail" id="succ-detail">07:58 · GPS verificado</div>
+        <button class="btn-primary" onclick="volverQR()" style="max-width:220px">← Volver al QR</button>
       </div>
     </div>
 
@@ -187,84 +253,109 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
       <div class="screen-header" style="display:flex;justify-content:space-between;align-items:center">
         <div>
           <div class="screen-title">Equipo</div>
-          <div class="screen-sub" id="equipo-obra">Selecciona obra</div>
+          <div class="screen-sub" id="equipo-obra">Selecciona una obra</div>
         </div>
-        <button onclick="openModal('modal-worker')" style="background:var(--accent);border:none;width:36px;height:36px;border-radius:50%;font-size:1.2rem;font-weight:800;cursor:pointer">+</button>
+        <button onclick="openModal('modal-worker')" style="background:var(--accent);border:none;color:#000;width:36px;height:36px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:800;">+</button>
       </div>
       <div style="display:flex;gap:8px;padding:12px 16px">
         <div style="flex:1;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:10px;text-align:center">
-          <div class="rstat-val" style="color:var(--green)" id="cnt-p">0</div><div class="rstat-lbl">Presentes</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--green)" id="cnt-p">0</div>
+          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase">Presentes</div>
         </div>
         <div style="flex:1;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:10px;text-align:center">
-          <div class="rstat-val" style="color:var(--red)" id="cnt-a">0</div><div class="rstat-lbl">Ausentes</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--red)" id="cnt-a">0</div>
+          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase">Ausentes</div>
         </div>
         <div style="flex:1;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:10px;text-align:center">
-          <div class="rstat-val" style="color:var(--accent2)" id="cnt-t">0</div><div class="rstat-lbl">Total</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--accent2)" id="cnt-t">0</div>
+          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase">Total</div>
         </div>
       </div>
       <div id="worker-full-list"></div>
+      <div class="h80"></div>
     </div>
 
     <div class="screen" id="s-reporte">
-      <div class="screen-header"><div class="screen-title">Reportes</div></div>
-      <div class="p16" style="background:var(--surface2); margin:16px; border-radius:16px; border:1px solid var(--border)">
-        <div style="font-family:'Barlow Condensed';font-size:1.3rem;font-weight:800; color:var(--accent)" id="rep-obra-name">Selecciona obra</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-          <div><div class="rstat-val" id="rep-total">0</div><div class="rstat-lbl">Personal</div></div>
+      <div class="screen-header">
+        <div class="screen-title">Reporte Semanal</div>
+        <div class="screen-sub">Exporta en CSV para Excel</div>
+      </div>
+      <div class="report-header">
+        <div class="report-obra" id="rep-obra-name">🏗️ Selecciona una obra</div>
+        <div class="report-stats">
+          <div><div class="rstat-val" style="color:var(--accent)" id="rep-total">0</div><div class="rstat-lbl">Personal</div></div>
           <div><div class="rstat-val" style="color:var(--green)" id="rep-logs">0</div><div class="rstat-lbl">Marcas Hoy</div></div>
         </div>
       </div>
       <div class="p16">
-        <button class="btn-primary green" onclick="exportarCSV()">📊 Exportar a Excel (.CSV)</button>
+        <button class="btn-primary" style="background:var(--green); margin-bottom:15px" onclick="exportarCSV()">📊 Exportar a Excel (.CSV)</button>
+        <div class="section-label" style="padding-left:0;margin-bottom:8px">Resumen de Asistencia</div>
         <table class="rt">
-          <thead><tr><th>Trabajador</th><th>Días</th><th>Hrs Est.</th></tr></thead>
+          <thead><tr><th>Trabajador</th><th>Días</th><th>Horas Est.</th></tr></thead>
           <tbody id="rep-tbody"></tbody>
         </table>
       </div>
+      <div class="h80"></div>
     </div>
 
     <div class="screen" id="s-ajustes">
       <div class="screen-header">
         <div class="screen-title">Ajustes</div>
-        <div class="screen-sub" id="ajustes-obra">Selecciona obra</div>
+        <div class="screen-sub" id="ajustes-obra">Configuración de Obra</div>
       </div>
-      <div class="p16">
-        <div class="input-group">
-          <label class="input-label">Radio GPS (Metros permitidos)</label>
-          <select class="input-field" id="aj-radio" onchange="actualizarRadio()">
-            <option value="20">20 metros</option>
-            <option value="50">50 metros</option>
-            <option value="80">80 metros</option>
-          </select>
+      
+      <div class="section-label">Radio GPS</div>
+      <div class="switch-row">
+        <div><div class="sw-label">Radio permitido</div><div class="sw-sub" id="radio-lbl">80 metros desde el punto GPS</div></div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <button onclick="changeRadio(-10)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:700">−</button>
+          <button onclick="changeRadio(10)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:1rem;font-weight:700">+</button>
         </div>
-        <button class="btn-primary blue" onclick="recapturarGPS()">📍 Recapturar Centro GPS</button>
-        
-        <div class="section-label" style="padding-left:0; margin-top:20px; color:var(--red)">Zona Peligrosa</div>
-        <button class="btn-danger" onclick="eliminarObra()">🗑️ Eliminar Obra Actual</button>
       </div>
+
+      <div class="p16" style="padding-top:20px">
+        <button class="btn-primary blue" onclick="recapturarGPS()">📍 Recapturar GPS de obra</button>
+      </div>
+
+      <div class="section-label" style="margin-top:10px">Zona peligrosa</div>
+      <div class="p16" style="padding-top:8px">
+        <button class="btn-danger" style="border-color:rgba(239,68,68,0.6)" onclick="eliminarObra()">🗑️ Eliminar obra y datos</button>
+      </div>
+      <div class="h80"></div>
     </div>
 
-  </div>
-
-  <div class="bottom-nav">
-    <button class="nav-item active" onclick="goScreen('obras')"><span class="ni">🏗️</span>Obras</button>
-    <button class="nav-item" onclick="goScreen('marcar')"><span class="ni">✅</span>Marcar</button>
-    <button class="nav-item" onclick="goScreen('capataz')"><span class="ni">👷</span>Equipo</button>
-    <button class="nav-item" onclick="goScreen('reporte')"><span class="ni">📊</span>Reportes</button>
-    <button class="nav-item" onclick="goScreen('ajustes')"><span class="ni">⚙️</span>Ajustes</button>
+  </div><div class="bottom-nav">
+    <button class="nav-item active" id="nav-obras" onclick="goScreen('obras')"><span class="ni">🏗️</span><span>Obras</span></button>
+    <button class="nav-item" id="nav-marcar" onclick="goScreen('marcar')"><span class="ni">✅</span><span>Marcar</span></button>
+    <button class="nav-item" id="nav-capataz" onclick="goScreen('capataz')"><span class="ni">👷</span><span>Equipo</span></button>
+    <button class="nav-item" id="nav-reporte" onclick="goScreen('reporte')"><span class="ni">📊</span><span>Reportes</span></button>
+    <button class="nav-item" id="nav-ajustes" onclick="goScreen('ajustes')"><span class="ni">⚙️</span><span>Ajustes</span></button>
   </div>
 </div>
 </div>
 
 <button class="fab" id="fab-main" onclick="openModal('modal-obra')">+</button>
 
+<div class="toast" id="toast">
+  <span class="toast-icon" id="ti" style="font-size:1.1rem"></span>
+  <div><strong id="tt" style="display:block;font-size:0.85rem"></strong><span id="tm" style="color:var(--muted);font-size:0.73rem"></span></div>
+</div>
+
 <div class="modal-overlay" id="modal-obra">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div style="font-family:'Barlow Condensed';font-size:1.4rem;font-weight:800;margin-bottom:16px; color:var(--accent)">➕ Nueva Obra</div>
-    <div class="input-group"><label class="input-label">Nombre</label><input class="input-field" id="new-obra-name" placeholder="Ej: Edificio Central"></div>
-    <p style="font-size:0.75rem; color:var(--muted); margin-bottom:15px">Se capturará tu ubicación GPS actual como el centro oficial de la obra.</p>
-    <button class="btn-primary" onclick="crearObra()">📍 Capturar y Guardar</button>
+    <div class="modal-title">➕ Nueva Obra</div>
+    <div class="input-group"><label class="input-label">Nombre de la obra</label><input class="input-field" placeholder="Ej: Casa Familia González" id="new-obra-name"></div>
+    <div class="input-group"><label class="input-label">Dirección (Opcional)</label><input class="input-field" placeholder="Calle, número, comuna" id="new-obra-addr"></div>
+    <div class="input-group">
+      <label class="input-label">Radio Inicial</label>
+      <div class="radio-group">
+        <div class="radio-opt" onclick="selRad(this,50)">50m</div>
+        <div class="radio-opt sel" onclick="selRad(this,80)">80m</div>
+        <div class="radio-opt" onclick="selRad(this,100)">100m</div>
+      </div>
+    </div>
+    <button class="btn-primary" onclick="createObra()">📍 Crear con GPS actual</button>
     <button class="btn-secondary" onclick="closeModal('modal-obra')">Cancelar</button>
   </div>
 </div>
@@ -272,140 +363,170 @@ body { font-family: 'Barlow', sans-serif; background: var(--bg); color: var(--te
 <div class="modal-overlay" id="modal-worker">
   <div class="modal">
     <div class="modal-handle"></div>
-    <div style="font-family:'Barlow Condensed';font-size:1.4rem;font-weight:800;margin-bottom:16px; color:var(--accent)">👷 Nuevo Trabajador</div>
-    <div class="input-group"><label class="input-label">Nombre Completo</label><input class="input-field" id="nw-name"></div>
+    <div class="modal-title">👷 Agregar Trabajador</div>
+    <div class="input-group"><label class="input-label">Nombre completo</label><input class="input-field" placeholder="Ej: Pedro Soto Morales" id="nw-name"></div>
     <div class="input-group"><label class="input-label">Cargo</label>
       <select class="input-field" id="nw-role">
-        <option>Maestro</option><option>Ayudante</option><option>Capataz</option>
+        <option>Maestro primera</option><option>Maestro segunda</option><option>Ayudante</option><option>Capataz</option><option>Otro</option>
       </select>
     </div>
-    <button class="btn-primary" onclick="addWorker()">Guardar</button>
+    <button class="btn-primary" onclick="addWorker()">✅ Agregar al equipo</button>
     <button class="btn-secondary" onclick="closeModal('modal-worker')">Cancelar</button>
   </div>
 </div>
 
-<div class="toast" id="toast"><span id="ti"></span><div><strong id="tt" style="display:block;font-size:0.85rem"></strong><span id="tm" style="color:var(--muted);font-size:0.73rem"></span></div></div>
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+      <div class="worker-avatar" id="det-av" style="width:52px;height:52px;font-size:1.1rem"></div>
+      <div><div style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800" id="det-name"></div><div style="font-size:0.75rem;color:var(--muted)" id="det-sub"></div></div>
+    </div>
+    <div class="input-group"><label class="input-label">Editar Nombre</label><input class="input-field" id="det-name-in"></div>
+    <div class="input-group"><label class="input-label">Editar Cargo</label>
+      <select class="input-field" id="det-role-in">
+        <option>Maestro primera</option><option>Maestro segunda</option><option>Ayudante</option><option>Capataz</option><option>Otro</option>
+      </select>
+    </div>
+    <button class="btn-primary" onclick="saveWorker()">💾 Guardar cambios</button>
+    <button class="btn-danger" onclick="fireWorker()">🚫 Dar de baja (despido)</button>
+    <button class="btn-secondary" onclick="closeModal('modal-detail')">Cancelar</button>
+  </div>
+</div>
 
 <script>
-// --- DATOS GLOBALES ---
+// --- DATOS GLOBALES Y PERSISTENCIA ---
 let obras = JSON.parse(localStorage.getItem('oc_obras') || '[]');
 let workers = JSON.parse(localStorage.getItem('oc_workers') || '[]');
 let asistencia = JSON.parse(localStorage.getItem('oc_asist') || '[]');
 let currentObraId = null;
+let selWorkerId = null;
+let radioValNuevaObra = 80;
 
-// --- UTILIDADES ---
+const COLORS = ['#f97316','#22c55e','#3b82f6','#f59e0b','#ec4899','#8b5cf6','#14b8a6','#ef4444'];
+function ini(name){ return name.split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function col(id){ return COLORS[(id)%COLORS.length]; }
+
 function saveData() {
     localStorage.setItem('oc_obras', JSON.stringify(obras));
     localStorage.setItem('oc_workers', JSON.stringify(workers));
     localStorage.setItem('oc_asist', JSON.stringify(asistencia));
 }
-function showToast(icon, title, msg) {
-    document.getElementById('ti').textContent = icon;
-    document.getElementById('tt').textContent = title;
-    document.getElementById('tm').textContent = msg;
-    const t = document.getElementById('toast');
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 3000);
-}
-setInterval(() => document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'}), 1000);
-function openModal(id) { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// --- NAVEGACIÓN ---
-function goScreen(n) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+// --- UTILIDADES DE UI ---
+function updateClock(){ document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'}); }
+setInterval(updateClock,1000); updateClock();
+
+function showToast(icon,title,msg){
+    document.getElementById('ti').textContent=icon; document.getElementById('tt').textContent=title; document.getElementById('tm').textContent=msg;
+    const t=document.getElementById('toast');
+    t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
+}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+function goScreen(n){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
     document.getElementById('s-'+n).classList.add('active');
-    event.currentTarget.classList.add('active');
+    document.getElementById('nav-'+n).classList.add('active');
     document.getElementById('fab-main').style.display = (n==='obras') ? 'flex' : 'none';
     
     if(n==='obras') renderObras();
-    if(n==='marcar') renderQuickWorkers();
-    if(n==='capataz') renderEquipo();
-    if(n==='reporte') renderReportes();
+    if(n==='marcar') renderQuick();
+    if(n==='capataz') renderWorkers();
+    if(n==='reporte') renderReporte();
     if(n==='ajustes') renderAjustes();
 }
 
 // --- 1. OBRAS ---
-function crearObra() {
-    const name = document.getElementById('new-obra-name').value;
-    if(!name) return showToast('⚠️', 'Error', 'Ingresa un nombre');
+function selRad(el,v){
+    document.querySelectorAll('.radio-opt').forEach(o=>o.classList.remove('sel'));
+    el.classList.add('sel'); radioValNuevaObra=v;
+}
+
+function createObra() {
+    const name=document.getElementById('new-obra-name').value.trim();
+    const addr=document.getElementById('new-obra-addr').value.trim();
+    if(!name) return showToast('⚠️','Falta el nombre','Ingresa el nombre de la obra');
 
     navigator.geolocation.getCurrentPosition(pos => {
-        const o = { id: Date.now(), name, lat: pos.coords.latitude, lon: pos.coords.longitude, radio: 50 };
-        obras.push(o); saveData(); renderObras(); closeModal('modal-obra');
-        showToast('🏗️', 'Obra Creada', 'Ubicación GPS guardada');
-        document.getElementById('new-obra-name').value = '';
-    }, () => showToast('❌', 'Error GPS', 'Activa la ubicación'), { enableHighAccuracy: true });
+        const id = Date.now();
+        obras.push({id, name, addr, lat:pos.coords.latitude, lon:pos.coords.longitude, radio:radioValNuevaObra, activa:true});
+        saveData(); closeModal('modal-obra');
+        document.getElementById('new-obra-name').value=''; document.getElementById('new-obra-addr').value='';
+        renderObras(); showToast('🏗️','Obra creada',`${name} registrada con GPS actual`);
+    }, () => showToast('❌', 'Error', 'Activa el GPS para crear obras'), {enableHighAccuracy:true});
 }
 
 function renderObras() {
     const c = document.getElementById('obras-list-container');
-    document.getElementById('obras-sub').textContent = `${obras.length} proyectos`;
-    if(!obras.length) return c.innerHTML = `<p style="text-align:center; color:var(--muted); margin-top:40px">Sin obras. Presiona +</p>`;
+    document.getElementById('obras-sub').textContent = `${obras.length} activas`;
+    if(!obras.length){ c.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--muted)">Sin obras registradas. Presiona +</div>`; return; }
     
     c.innerHTML = obras.map(o => {
         const wCount = workers.filter(w=>w.obraId===o.id).length;
         return `<div class="obra-card" onclick="selectObra(${o.id})">
-            <div class="obra-top"><div class="obra-name">${o.name}</div><div class="obra-status">Activa</div></div>
-            <div class="obra-meta">👷 ${wCount} trabajadores | ⭕ Radio ${o.radio}m</div>
+            <div class="obra-top"><div class="obra-name">${o.name}</div><div class="obra-status activa">Activa</div></div>
+            <div class="obra-addr">📍 ${o.addr||'Sin dirección'}</div>
+            <div class="obra-meta"><div class="obra-meta-item">👷 <strong>${wCount}</strong> trab.</div><div class="obra-meta-item">⭕ <strong>${o.radio}m</strong> radio</div></div>
         </div>`;
     }).join('');
 }
 
 function selectObra(id) {
-    currentObraId = id;
-    const o = obras.find(x => x.id === id);
+    currentObraId = id; const o = obras.find(x=>x.id===id);
     document.getElementById('marcar-sub').textContent = o.name;
     document.getElementById('qr-obra-name').textContent = o.name.toUpperCase();
     document.getElementById('equipo-obra').textContent = o.name;
     document.getElementById('rep-obra-name').textContent = o.name;
     document.getElementById('ajustes-obra').textContent = o.name;
-    showToast('✅', 'Obra Seleccionada', o.name);
-    document.querySelectorAll('.nav-item')[1].click();
+    goScreen('marcar');
 }
 
-// --- 2. MARCAR (GPS REAL) ---
-function calcularDistancia(lat1, lon1, lat2, lon2) {
-    const R = 6371e3; const p1 = lat1 * Math.PI/180; const p2 = lat2 * Math.PI/180;
-    const dp = (lat2-lat1) * Math.PI/180; const dl = (lon2-lon1) * Math.PI/180;
-    const a = Math.sin(dp/2) * Math.sin(dp/2) + Math.cos(p1) * Math.cos(p2) * Math.sin(dl/2) * Math.sin(dl/2);
+// --- 2. MARCAR Y GPS REAL ---
+function calcularDistancia(lat1, lon1, lat2, lon2){
+    const R = 6371e3; const p1 = lat1*Math.PI/180; const p2 = lat2*Math.PI/180;
+    const dp = (lat2-lat1)*Math.PI/180; const dl = (lon2-lon1)*Math.PI/180;
+    const a = Math.sin(dp/2)*Math.sin(dp/2) + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
 function iniciarEscaneoGPS() {
-    if(!currentObraId) return showToast('⚠️', 'Aviso', 'Selecciona una obra primero');
-    const o = obras.find(x => x.id === currentObraId);
+    if(!currentObraId) return showToast('⚠️','Atención','Selecciona una obra primero');
+    const o = obras.find(x=>x.id===currentObraId);
     
-    document.getElementById('marcar-main').style.display = 'none';
-    document.getElementById('scan-screen').style.display = 'block';
-    document.getElementById('gps-checking').style.display = 'block';
-    document.getElementById('gps-ok').style.display = 'none';
-    document.getElementById('gps-fail').style.display = 'none';
+    document.getElementById('marcar-main').style.display='none';
+    document.getElementById('scan-screen').style.display='block';
+    document.getElementById('gps-checking').style.display='block';
+    document.getElementById('gps-ok').style.display='none';
+    document.getElementById('gps-fail').style.display='none';
 
+    // Petición GPS de Alta Precisión Sin Caché
     navigator.geolocation.getCurrentPosition(pos => {
         const dist = calcularDistancia(pos.coords.latitude, pos.coords.longitude, o.lat, o.lon);
-        document.getElementById('gps-checking').style.display = 'none';
+        document.getElementById('gps-checking').style.display='none';
         
         if(dist <= o.radio) {
-            document.getElementById('gps-ok').style.display = 'flex';
-            document.getElementById('gps-msg-ok').textContent = `✅ En la obra (${Math.round(dist)}m)`;
+            document.getElementById('gps-ok').style.display='flex';
+            document.getElementById('gps-msg-ok').textContent = `Estás a ${Math.round(dist)}m · Límite: ${o.radio}m`;
+            
             const sel = document.getElementById('scan-worker-select');
-            const wObra = workers.filter(w => w.obraId === currentObraId);
-            sel.innerHTML = '<option value="">-- Selecciona tu nombre --</option>' + wObra.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
-            validarBotonesRegistro();
+            const ws = workers.filter(w=>w.obraId===currentObraId);
+            sel.innerHTML = '<option value="">— Selecciona tu nombre —</option>' + ws.map(w=>`<option value="${w.id}">${w.name}</option>`).join('');
+            validarRegistro();
         } else {
-            document.getElementById('gps-fail').style.display = 'flex';
-            document.getElementById('gps-msg-fail').innerHTML = `❌ Estás a ${Math.round(dist)}m<br><small>Límite: ${o.radio}m</small>`;
+            document.getElementById('gps-fail').style.display='flex';
+            document.getElementById('gps-msg-fail').innerHTML = `Estás a ${Math.round(dist)}m<br>Límite: ${o.radio}m`;
         }
     }, () => {
-        document.getElementById('gps-checking').style.display = 'none';
-        document.getElementById('gps-fail').style.display = 'flex';
-        document.getElementById('gps-msg-fail').textContent = "❌ Error al leer GPS";
-    }, { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+        document.getElementById('gps-checking').style.display='none';
+        document.getElementById('gps-fail').style.display='flex';
+        document.getElementById('gps-msg-fail').textContent = "No se pudo leer el satélite";
+    }, {enableHighAccuracy:true, timeout:10000, maximumAge:0});
 }
 
-function validarBotonesRegistro() {
+function validarRegistro() {
     const val = document.getElementById('scan-worker-select').value;
     document.getElementById('btn-ent').disabled = !val;
     document.getElementById('btn-sal').disabled = !val;
@@ -413,131 +534,154 @@ function validarBotonesRegistro() {
 
 function doRegistro(tipo) {
     const wId = parseInt(document.getElementById('scan-worker-select').value);
-    const worker = workers.find(w => w.id === wId);
-    const horaStr = new Date().toLocaleTimeString('es-CL', {hour:'2-digit', minute:'2-digit'});
+    const worker = workers.find(w=>w.id===wId);
+    const t = new Date().toLocaleTimeString('es-CL',{hour:'2-digit',minute:'2-digit'});
     
-    worker.present = (tipo === 'ENTRADA');
-    worker.lastTime = horaStr;
-    
-    asistencia.push({ id: Date.now(), workerId: wId, workerName: worker.name, obraId: currentObraId, tipo, fecha: new Date().toLocaleDateString('es-CL'), hora: horaStr });
+    worker.present = (tipo === 'ENTRADA'); worker.time = t;
+    asistencia.push({ id:Date.now(), workerId:wId, workerName:worker.name, obraId:currentObraId, tipo, fecha:new Date().toLocaleDateString('es-CL'), hora:t });
     saveData();
 
-    document.getElementById('scan-screen').style.display = 'none';
+    document.getElementById('scan-screen').style.display='none';
     document.getElementById('success-screen').classList.add('show');
     document.getElementById('succ-title').textContent = tipo + " REGISTRADA";
-    document.getElementById('succ-name').textContent = `${worker.name} a las ${horaStr}`;
-    const c = document.getElementById('succ-circ');
-    c.style.background = tipo==='ENTRADA' ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)';
-    c.style.borderColor = tipo==='ENTRADA' ? 'var(--green)' : 'var(--red)';
-    c.textContent = tipo==='ENTRADA' ? '🟢' : '🔴';
+    document.getElementById('succ-name').textContent = worker.name;
+    document.getElementById('succ-detail').textContent = `${t} · GPS Verificado`;
+    
+    const circ = document.getElementById('succ-circ');
+    if(tipo==='ENTRADA'){ circ.style.background='rgba(34,197,94,0.15)'; circ.style.borderColor='var(--green)'; circ.textContent='🟢'; }
+    else { circ.style.background='rgba(239,68,68,0.15)'; circ.style.borderColor='var(--red)'; circ.textContent='🔴'; }
 }
 
 function volverQR() {
-    document.getElementById('scan-screen').style.display = 'none';
+    document.getElementById('scan-screen').style.display='none';
     document.getElementById('success-screen').classList.remove('show');
-    document.getElementById('marcar-main').style.display = 'block';
-    renderQuickWorkers();
+    document.getElementById('marcar-main').style.display='block';
+    renderQuick();
 }
 
-function renderQuickWorkers() {
+function renderQuick() {
     if(!currentObraId) return;
-    const c = document.getElementById('worker-quick');
-    const pres = workers.filter(w => w.obraId === currentObraId && w.present);
-    c.innerHTML = pres.map(w => `<div style="font-size:0.85rem; padding:8px 0; border-bottom:1px solid var(--border)">✅ <strong style="color:var(--text)">${w.name}</strong> <span style="color:var(--green); float:right">${w.lastTime}</span></div>`).join('');
+    const ws = workers.filter(w=>w.obraId===currentObraId && w.present);
+    document.getElementById('worker-quick').innerHTML = ws.map(w=>`
+        <div class="worker-item" style="padding:10px 0">
+          <div class="worker-avatar" style="width:32px;height:32px;font-size:0.72rem;background:${col(w.id)}22;color:${col(w.id)}">${ini(w.name)}</div>
+          <div class="worker-info"><div class="worker-name" style="font-size:0.82rem">${w.name}</div></div>
+          <div style="font-size:0.75rem;color:var(--green)">✅ ${w.time}</div>
+        </div>`).join('');
 }
 
 // --- 3. EQUIPO ---
 function addWorker() {
     if(!currentObraId) return showToast('⚠️','Aviso','Selecciona obra primero');
-    const name = document.getElementById('nw-name').value;
-    if(!name) return;
-    workers.push({ id: Date.now(), obraId: currentObraId, name, role: document.getElementById('nw-role').value, present: false, lastTime: '--:--' });
-    saveData(); closeModal('modal-worker'); renderEquipo();
-    document.getElementById('nw-name').value = '';
+    const name=document.getElementById('nw-name').value.trim();
+    if(!name) return showToast('⚠️','Error','Ingresa el nombre');
+    
+    workers.push({ id:Date.now(), obraId:currentObraId, name, role:document.getElementById('nw-role').value, present:false, time:'--:--' });
+    saveData(); closeModal('modal-worker'); renderWorkers();
+    document.getElementById('nw-name').value='';
 }
 
-function renderEquipo() {
+function renderWorkers() {
     if(!currentObraId) return;
-    const wObra = workers.filter(w => w.obraId === currentObraId);
-    const p = wObra.filter(w => w.present).length;
+    const ws = workers.filter(w=>w.obraId===currentObraId);
+    const p = ws.filter(w=>w.present).length;
     document.getElementById('cnt-p').textContent = p;
-    document.getElementById('cnt-a').textContent = wObra.length - p;
-    document.getElementById('cnt-t').textContent = wObra.length;
+    document.getElementById('cnt-a').textContent = ws.length - p;
+    document.getElementById('cnt-t').textContent = ws.length;
 
-    document.getElementById('worker-full-list').innerHTML = wObra.map(w => `
-        <div class="worker-item">
-            <div class="worker-avatar">${w.name[0]}</div>
+    document.getElementById('worker-full-list').innerHTML = ws.map(w=>`
+        <div class="worker-item ${!w.present?'absent':''}" onclick="openDetail(${w.id})">
+            <div class="worker-avatar" style="background:${col(w.id)}22;color:${col(w.id)}">${ini(w.name)}</div>
             <div class="worker-info"><div class="worker-name">${w.name}</div><div class="worker-role">${w.role}</div></div>
-            <div>
-                <div style="font-size:0.82rem; font-weight:600; text-align:right; color:${w.present?'var(--green)':'var(--muted)'}">${w.present?'En Obra':'Fuera'}</div>
-                <div style="font-size:0.65rem; color:var(--muted); text-align:right">${w.lastTime}</div>
-            </div>
-        </div>
-    `).join('');
+            <div><div class="worker-time-val">${w.present?'En Obra':'Ausente'}</div><div class="worker-time-label">Ult: ${w.time}</div></div>
+        </div>`).join('');
 }
 
-// --- 4. REPORTES ---
-function renderReportes() {
+function openDetail(id) {
+    selWorkerId = id; const w = workers.find(x=>x.id===id);
+    document.getElementById('det-av').textContent = ini(w.name);
+    document.getElementById('det-av').style.background = col(w.id)+'22';
+    document.getElementById('det-av').style.color = col(w.id);
+    document.getElementById('det-name').textContent = w.name;
+    document.getElementById('det-sub').textContent = w.role;
+    document.getElementById('det-name-in').value = w.name;
+    document.getElementById('det-role-in').value = w.role;
+    openModal('modal-detail');
+}
+
+function saveWorker() {
+    const w = workers.find(x=>x.id===selWorkerId);
+    w.name = document.getElementById('det-name-in').value;
+    w.role = document.getElementById('det-role-in').value;
+    saveData(); closeModal('modal-detail'); renderWorkers(); showToast('💾','Guardado','Datos actualizados');
+}
+
+function fireWorker() {
+    if(confirm('¿Eliminar trabajador de la obra permanentemente?')){
+        workers = workers.filter(x=>x.id!==selWorkerId);
+        saveData(); closeModal('modal-detail'); renderWorkers(); showToast('🚫','Eliminado','Trabajador fuera del equipo');
+    }
+}
+
+// --- 4. REPORTE Y CSV ---
+function renderReporte() {
     if(!currentObraId) return;
-    const wObra = workers.filter(w => w.obraId === currentObraId);
-    document.getElementById('rep-total').textContent = wObra.length;
+    const ws = workers.filter(w=>w.obraId===currentObraId);
+    document.getElementById('rep-total').textContent = ws.length;
     
     const hoy = new Date().toLocaleDateString('es-CL');
-    const logsObra = asistencia.filter(a => a.obraId === currentObraId);
-    document.getElementById('rep-logs').textContent = logsObra.filter(a => a.fecha === hoy).length;
+    const logs = asistencia.filter(a=>a.obraId===currentObraId);
+    document.getElementById('rep-logs').textContent = logs.filter(a=>a.fecha===hoy).length;
 
-    document.getElementById('rep-tbody').innerHTML = wObra.map(w => {
-        const logsTrabajador = logsObra.filter(a => a.workerId === w.id && a.tipo === 'ENTRADA');
-        const diasUnicos = new Set(logsTrabajador.map(a => a.fecha)).size;
-        return `<tr><td><strong>${w.name}</strong></td><td>${diasUnicos}</td><td style="color:var(--accent); font-weight:bold">${diasUnicos * 8}h</td></tr>`;
+    document.getElementById('rep-tbody').innerHTML = ws.map(w=>{
+        const myLogs = logs.filter(a=>a.workerId===w.id && a.tipo==='ENTRADA');
+        const d = new Set(myLogs.map(a=>a.fecha)).size;
+        return `<tr><td><b>${w.name}</b></td><td class="days-cell">${d}</td><td class="hrs-cell">${d*8}h</td></tr>`;
     }).join('');
 }
 
 function exportarCSV() {
-    if(!currentObraId) return showToast('⚠️','Aviso','Selecciona obra');
-    const logsObra = asistencia.filter(a => a.obraId === currentObraId);
-    if(logsObra.length === 0) return showToast('⚠️','Vacio','No hay registros');
+    const logs = asistencia.filter(a=>a.obraId===currentObraId);
+    if(logs.length===0) return showToast('⚠️','Vacío','No hay registros en esta obra');
     
     let csv = "Fecha;Hora;Obra;Trabajador;Tipo\n";
-    logsObra.forEach(a => { csv += `${a.fecha};${a.hora};${obras.find(o=>o.id===a.obraId)?.name || 'N/A'};${a.workerName};${a.tipo}\n`; });
+    logs.forEach(a => { csv += `${a.fecha};${a.hora};${obras.find(o=>o.id===a.obraId).name};${a.workerName};${a.tipo}\n`; });
     
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' }); // BOM for Excel
     const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `Asistencia_${new Date().toLocaleDateString('es-CL')}.csv`;
-    link.click();
+    link.href = URL.createObjectURL(blob); link.download = `ObraCheck_Reporte_${new Date().toLocaleDateString('es-CL')}.csv`; link.click();
+    showToast('📊','Exportado','Archivo CSV descargado');
 }
 
 // --- 5. AJUSTES ---
 function renderAjustes() {
     if(!currentObraId) return;
-    const o = obras.find(x => x.id === currentObraId);
-    document.getElementById('aj-radio').value = o.radio;
+    const o = obras.find(x=>x.id===currentObraId);
+    document.getElementById('radio-lbl').textContent = o.radio + ' metros desde el punto GPS';
 }
 
-function actualizarRadio() {
-    const o = obras.find(x => x.id === currentObraId);
-    o.radio = document.getElementById('aj-radio').value;
-    saveData(); showToast('⚙️', 'Ajustes', 'Radio actualizado');
+function changeRadio(d) {
+    if(!currentObraId) return;
+    const o = obras.find(x=>x.id===currentObraId);
+    o.radio = Math.max(20, Math.min(200, o.radio + d));
+    saveData(); renderAjustes(); showToast('📍','Radio actualizado',`Nuevo radio: ${o.radio}m`);
 }
 
 function recapturarGPS() {
-    const o = obras.find(x => x.id === currentObraId);
-    showToast('📡', 'Buscando GPS', 'Espere...');
+    if(!currentObraId) return;
+    const o = obras.find(x=>x.id===currentObraId);
+    showToast('📡','Buscando GPS','Espere...');
     navigator.geolocation.getCurrentPosition(pos => {
         o.lat = pos.coords.latitude; o.lon = pos.coords.longitude;
-        saveData(); showToast('✅', 'GPS Actualizado', 'Centro reasignado');
-    }, () => showToast('❌', 'Error', 'No se pudo leer GPS'), {enableHighAccuracy: true, maximumAge:0});
+        saveData(); showToast('✅','GPS Actualizado','Centro de obra guardado');
+    }, () => showToast('❌','Error','No se pudo leer GPS'), {enableHighAccuracy:true, maximumAge:0});
 }
 
 function eliminarObra() {
-    if(confirm('🚨 ¿ESTÁS SEGURO? Se borrará la obra, sus trabajadores y todo el historial.')) {
-        obras = obras.filter(x => x.id !== currentObraId);
-        workers = workers.filter(x => x.obraId !== currentObraId);
-        asistencia = asistencia.filter(x => x.obraId !== currentObraId);
-        currentObraId = null; saveData();
-        document.querySelectorAll('.nav-item')[0].click();
-        showToast('🗑️', 'Eliminado', 'Obra borrada');
+    if(!currentObraId) return;
+    if(confirm('🚨 ESTA ACCIÓN NO SE PUEDE DESHACER.\nSe borrará la obra, sus trabajadores y todos los registros de asistencia.\n¿Continuar?')) {
+        obras = obras.filter(x=>x.id!==currentObraId); workers = workers.filter(x=>x.obraId!==currentObraId); asistencia = asistencia.filter(x=>x.obraId!==currentObraId);
+        currentObraId = null; saveData(); goScreen('obras'); showToast('🗑️','Obra eliminada','Todo el historial fue borrado');
     }
 }
 
